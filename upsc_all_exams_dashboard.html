@@ -1,0 +1,680 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Universal UPSC Exam Preparation Command Center</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* Universal UPSC Prep Suite Stylesheet */
+    :root {
+      --bg-primary: #0f172a;
+      --bg-card: #1e293b;
+      --bg-card-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent-primary: #3b82f6;
+      --accent-primary-hover: #2563eb;
+      --accent-success: #10b981;
+      --accent-warning: #f59e0b;
+      --accent-danger: #ef4444;
+      --accent-purple: #8b5cf6;
+      --border-color: #334155;
+      --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 18px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background-color: var(--bg-primary); color: var(--text-main); font-family: var(--font-sans); line-height: 1.5; min-height: 100vh; }
+    .app-container { max-width: 1380px; margin: 0 auto; padding: 20px; }
+
+    /* Header */
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 20px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 16px; }
+    .brand { display: flex; align-items: center; gap: 16px; }
+    .brand-logo { width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #3b82f6); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; }
+    .brand-text h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+    .brand-text p { font-size: 0.85rem; color: var(--text-muted); }
+    .header-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+
+    .exam-selector-box { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); }
+    .exam-select-dropdown { width: auto; background: var(--bg-primary); color: #60a5fa; font-weight: 700; border: 1px solid var(--accent-primary); padding: 8px 12px; border-radius: var(--radius-sm); cursor: pointer; }
+
+    .daily-hours-badge { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
+
+    /* Navigation Tabs */
+    .nav-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 24px; }
+    .nav-tab { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 12px 20px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; white-space: nowrap; }
+    .nav-tab:hover { background: var(--bg-card-hover); color: var(--text-main); }
+    .nav-tab.active { background: var(--accent-primary); border-color: var(--accent-primary); color: #fff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+
+    /* Tab Content Visibility */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Cards Base */
+    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); }
+    .active-exam-banner { margin-bottom: 20px; border-left: 4px solid var(--accent-primary); background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent); }
+    .active-exam-banner h2 { font-size: 1.4rem; margin-top: 4px; }
+    .active-exam-banner p { color: var(--text-muted); font-size: 0.9rem; }
+
+    .countdown-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; margin-bottom: 24px; }
+    .countdown-card { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
+    .form-release-card { border-top: 4px solid var(--accent-warning); }
+    .exam-date-card { border-top: 4px solid var(--accent-danger); }
+    .card-header { margin-bottom: 16px; }
+    .card-header h2 { font-size: 1.3rem; font-weight: 700; margin-top: 8px; display: flex; align-items: center; gap: 10px; }
+    .target-date-subtitle { color: var(--text-muted); font-size: 0.85rem; margin-top: 2px; }
+
+    .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; letter-spacing: 0.5px; }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    /* Timer Display */
+    .timer-display { display: flex; align-items: center; justify-content: space-around; background: rgba(15, 23, 42, 0.6); padding: 18px 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255, 255, 255, 0.05); margin: 12px 0; }
+    .time-unit { display: flex; flex-direction: column; align-items: center; }
+    .time-value { font-family: var(--font-mono); font-size: 2.2rem; font-weight: 700; color: #ffffff; line-height: 1; }
+    .time-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-top: 6px; letter-spacing: 1px; }
+    .time-sep { font-family: var(--font-mono); font-size: 2rem; color: var(--text-muted); margin-bottom: 14px; }
+    .hours-remaining-banner { background: rgba(59, 130, 246, 0.1); border: 1px dashed rgba(59, 130, 246, 0.4); padding: 12px; border-radius: var(--radius-sm); text-align: center; font-size: 0.9rem; color: #93c5fd; }
+    .highlight-val { font-weight: 800; font-size: 1.1rem; color: #38bdf8; }
+
+    /* Metrics Grid */
+    .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
+    .metric-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px; }
+    .metric-icon { width: 52px; height: 52px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .metric-icon.blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+    .metric-icon.green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+    .metric-icon.purple { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
+    .metric-icon.orange { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+    .metric-data h4 { font-size: 1.4rem; font-weight: 800; line-height: 1.1; }
+    .metric-data p { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+    .mini-progress-bar { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; margin-top: 8px; overflow: hidden; }
+    .mini-progress-bar div { height: 100%; background: var(--accent-primary); transition: width 0.4s ease; }
+
+    /* Widgets Grid */
+    .dashboard-widgets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
+    .widget-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
+    .subject-progress-item { margin-bottom: 14px; }
+    .subject-progress-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
+    .subject-progress-bar { height: 8px; background: var(--bg-primary); border-radius: 4px; overflow: hidden; }
+    .subject-progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+
+    /* Forms & Inputs */
+    .form-group { margin-bottom: 16px; }
+    .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
+    .form-control { width: 100%; padding: 10px 14px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans); font-size: 0.9rem; }
+
+    /* Buttons */
+    .btn { padding: 10px 18px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; }
+    .btn-primary { background: var(--accent-primary); color: #fff; }
+    .btn-secondary { background: var(--bg-card-hover); color: var(--text-main); border: 1px solid var(--border-color); }
+    .btn-success { background: var(--accent-success); color: #fff; }
+    .btn-warning { background: var(--accent-warning); color: #fff; }
+    .btn-block { width: 100%; }
+    .btn-lg { padding: 14px 28px; font-size: 1rem; }
+
+    /* Syllabus Tab */
+    .syllabus-modules-container { display: flex; flex-direction: column; gap: 20px; }
+    .module-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; }
+    .module-card-header { padding: 18px 24px; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
+    .module-title-area { display: flex; align-items: center; gap: 12px; }
+    .module-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+    .badge-core { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
+    .badge-std { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
+    .topic-list { padding: 12px 24px; }
+    .topic-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+    .topic-item:last-child { border-bottom: none; }
+    .topic-stages { display: flex; gap: 12px; }
+    .stage-check { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; }
+    .stage-check input[type="checkbox"] { accent-color: var(--accent-primary); width: 16px; height: 16px; }
+
+    /* Pomodoro */
+    .pomodoro-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
+    .pomodoro-card { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
+    .pomodoro-modes { display: flex; gap: 10px; margin-bottom: 30px; }
+    .pomo-mode-btn { padding: 8px 16px; background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted); border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
+    .pomo-mode-btn.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
+    .pomodoro-timer-ring { width: 240px; height: 240px; border-radius: 50%; border: 8px solid var(--accent-primary); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 30px; }
+    .timer-clock-text { font-family: var(--font-mono); font-size: 3.8rem; font-weight: 700; line-height: 1; }
+    .pomodoro-controls { display: flex; gap: 16px; margin-bottom: 24px; }
+
+    /* Logs & Share */
+    .log-grid, .share-actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .log-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.85rem; }
+    .log-table th, .log-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
+    .flashcard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .flashcard { position: relative; border-top: 4px solid var(--accent-primary); }
+    .flashcard-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
+    .share-box { background: var(--bg-primary); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); text-align: center; }
+
+    /* Modal */
+    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center; }
+    .modal.active { display: flex; }
+    .modal-content { width: 90%; max-width: 500px; }
+    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+
+    @media (max-width: 768px) {
+      .countdown-grid, .dashboard-widgets-grid, .log-grid, .pomodoro-layout, .share-actions-grid { grid-template-columns: 1fr; }
+      .app-header { flex-direction: column; align-items: flex-start; gap: 12px; }
+    }
+  </style>
+</head>
+<body class="dark-theme">
+  <div class="app-container">
+
+    <!-- Top Navigation Header -->
+    <header class="app-header">
+      <div class="brand">
+        <div class="brand-logo">
+          <i class="fa-solid fa-compass-drafting"></i>
+        </div>
+        <div class="brand-text">
+          <h1>Universal UPSC Prep Suite</h1>
+          <p>Multi-Exam Command Center for All UPSC Aspirants</p>
+        </div>
+      </div>
+
+      <div class="header-actions">
+        <!-- Exam Switcher Dropdown -->
+        <div class="exam-selector-box">
+          <label for="activeExamSelect"><i class="fa-solid fa-award"></i> Active Exam:</label>
+          <select id="activeExamSelect" class="form-control exam-select-dropdown">
+            <option value="apfc2026" selected>UPSC APFC 2026 (Dec 19, 2026)</option>
+            <option value="epfo2026">UPSC EPFO EO/AO 2026 (Dec 19, 2026)</option>
+            <option value="cse2027">UPSC CSE / IAS 2027 (May 2027)</option>
+            <option value="capf2027">UPSC CAPF AC 2027 (Aug 2027)</option>
+            <option value="cds2027">UPSC CDS 2027 (Apr 2027)</option>
+            <option value="custom">✏️ Custom Exam / Custom Target</option>
+          </select>
+        </div>
+
+        <div class="daily-hours-badge">
+          <i class="fa-solid fa-fire"></i>
+          <span>Study Goal: <strong id="currentDailyTargetDisplay">8 Hours/Day</strong></span>
+        </div>
+
+        <button id="customExamModalBtn" class="btn btn-primary" title="Build custom exam plan">
+          <i class="fa-solid fa-plus"></i> New Custom Exam
+        </button>
+
+        <button id="settingsBtn" class="btn btn-secondary">
+          <i class="fa-solid fa-sliders"></i> Settings
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" data-tab="dashboardTab">
+        <i class="fa-solid fa-gauge-high"></i> Command Center
+      </button>
+      <button class="nav-tab" data-tab="syllabusTab">
+        <i class="fa-solid fa-list-check"></i> Syllabus Matrix
+      </button>
+      <button class="nav-tab" data-tab="pomodoroTab">
+        <i class="fa-solid fa-stopwatch"></i> Focus Timer
+      </button>
+      <button class="nav-tab" data-tab="studyLogTab">
+        <i class="fa-solid fa-chart-line"></i> Study Log & Stats
+      </button>
+      <button class="nav-tab" data-tab="revisionTab">
+        <i class="fa-solid fa-bolt"></i> High-Yield Revision
+      </button>
+      <button class="nav-tab" data-tab="shareTab">
+        <i class="fa-solid fa-share-nodes"></i> Export & Share Plan
+      </button>
+    </nav>
+
+    <!-- Tab Contents -->
+    <main class="content-area">
+
+      <!-- TAB 1: COMMAND CENTER -->
+      <section id="dashboardTab" class="tab-content active">
+        <div class="active-exam-banner card">
+          <div>
+            <span class="badge badge-warning" id="activeExamCategoryBadge">UPSC RECRUITMENT TEST</span>
+            <h2 id="activeExamTitle">UPSC Assistant Provident Fund Commissioner (APFC) 2026</h2>
+            <p id="activeExamSubtitle">Targeting Group 'A' Officers Cadre under Ministry of Labour & Employment</p>
+          </div>
+        </div>
+
+        <div class="countdown-grid">
+          <div class="card countdown-card form-release-card">
+            <div class="card-header">
+              <span class="badge badge-warning"><i class="fa-solid fa-bell"></i> Immediate Milestone</span>
+              <h2><i class="fa-solid fa-file-signature"></i> Application Form / Notification</h2>
+              <p class="target-date-subtitle" id="formTargetDateText">Target: Saturday, 22 August 2026</p>
+            </div>
+            <div class="timer-display" id="formCountdown">
+              <div class="time-unit"><span class="time-value" id="formDays">00</span><span class="time-label">Days</span></div><span class="time-sep">:</span>
+              <div class="time-unit"><span class="time-value" id="formHours">00</span><span class="time-label">Hours</span></div><span class="time-sep">:</span>
+              <div class="time-unit"><span class="time-value" id="formMinutes">00</span><span class="time-label">Mins</span></div><span class="time-sep">:</span>
+              <div class="time-unit"><span class="time-value" id="formSeconds">00</span><span class="time-label">Secs</span></div>
+            </div>
+          </div>
+
+          <div class="card countdown-card exam-date-card">
+            <div class="card-header">
+              <span class="badge badge-danger"><i class="fa-solid fa-bullseye"></i> D-DAY EXAM</span>
+              <h2><i class="fa-solid fa-calendar-check"></i> Examination Day</h2>
+              <p class="target-date-subtitle" id="examTargetDateText">Target: Saturday, 19 December 2026</p>
+            </div>
+            <div class="timer-display" id="examCountdown">
+              <div class="time-unit"><span class="time-value" id="examDays">000</span><span class="time-label">Days</span></div><span class="time-sep">:</span>
+              <div class="time-unit"><span class="time-value" id="examHours">00</span><span class="time-label">Hours</span></div><span class="time-sep">:</span>
+              <div class="time-unit"><span class="time-value" id="examMinutes">00</span><span class="time-label">Mins</span></div><span class="time-sep">:</span>
+              <div class="time-unit"><span class="time-value" id="examSeconds">00</span><span class="time-label">Secs</span></div>
+            </div>
+            <div class="hours-remaining-banner">
+              <i class="fa-solid fa-clock"></i> 
+              Est. Study Hours Available: <span id="estStudyHoursLeft" class="highlight-val">0</span> hrs
+            </div>
+          </div>
+        </div>
+
+        <div class="metrics-grid">
+          <div class="metric-card">
+            <div class="metric-icon blue"><i class="fa-solid fa-book-open"></i></div>
+            <div class="metric-data"><h4 id="syllabusPercentDisplay">0%</h4><p>Overall Syllabus Covered</p><div class="mini-progress-bar"><div id="syllabusProgressFill" style="width:0%"></div></div></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon green"><i class="fa-solid fa-hourglass-half"></i></div>
+            <div class="metric-data"><h4 id="totalHoursStudiedDisplay">0.0 hrs</h4><p>Total Study Hours Logged</p><span class="metric-subtext" id="todayHoursSubtext">Today: 0.0 hrs</span></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon purple"><i class="fa-solid fa-layer-group"></i></div>
+            <div class="metric-data"><h4 id="highWeightageProgressDisplay">0 Modules</h4><p>Core Focus Modules</p></div>
+          </div>
+          <div class="metric-card">
+            <div class="metric-icon orange"><i class="fa-solid fa-repeat"></i></div>
+            <div class="metric-data"><h4 id="revisionCompletedDisplay">0 Topics</h4><p>Fully Revised (2+ Revisions)</p></div>
+          </div>
+        </div>
+
+        <div class="dashboard-widgets-grid">
+          <div class="card widget-card">
+            <h3><i class="fa-solid fa-chart-pie"></i> Active Exam Core Modules Focus</h3>
+            <div class="subject-progress-list" id="subjectDashboardList"></div>
+          </div>
+          <div class="card widget-card">
+            <h3><i class="fa-solid fa-pencil"></i> Quick Log Study Hours Today</h3>
+            <form id="quickLogForm">
+              <div class="form-group"><label>Select Subject</label><select id="logSubjectSelect" class="form-control" required></select></div>
+              <div class="form-group"><label>Hours Spent</label><input type="number" id="logHoursInput" class="form-control" min="0.5" max="16" step="0.5" placeholder="2.5" required></div>
+              <div class="form-group"><label>Notes / Topics Covered</label><input type="text" id="logTopicNote" class="form-control" placeholder="Polity Constitutional Articles"></div>
+              <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-plus"></i> Save Study Log Entry</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 2: SYLLABUS MATRIX -->
+      <section id="syllabusTab" class="tab-content">
+        <div id="syllabusContainer" class="syllabus-modules-container"></div>
+      </section>
+
+      <!-- TAB 3: FOCUS TIMER -->
+      <section id="pomodoroTab" class="tab-content">
+        <div class="pomodoro-layout">
+          <div class="card pomodoro-card">
+            <div class="pomodoro-modes">
+              <button class="pomo-mode-btn active" data-mode="work">Deep Focus (50 min)</button>
+              <button class="pomo-mode-btn" data-mode="shortBreak">Short Break (10 min)</button>
+              <button class="pomo-mode-btn" data-mode="longBreak">Long Break (20 min)</button>
+            </div>
+            <div class="pomodoro-timer-ring"><div class="timer-clock-text"><span id="pomoMinutes">50</span>:<span id="pomoSeconds">00</span></div><span id="pomoStatusText">Ready to Focus</span></div>
+            <div class="pomodoro-controls">
+              <button id="pomoStartBtn" class="btn btn-lg btn-success"><i class="fa-solid fa-play"></i> Start Session</button>
+              <button id="pomoPauseBtn" class="btn btn-lg btn-warning" style="display:none;"><i class="fa-solid fa-pause"></i> Pause</button>
+              <button id="pomoResetBtn" class="btn btn-lg btn-secondary"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+            </div>
+          </div>
+          <div class="card pomo-tips-card">
+            <h3><i class="fa-solid fa-lightbulb"></i> Recommended UPSC Study Routine</h3>
+            <ul class="tips-list">
+              <li><strong>6 Hours Baseline:</strong> 3 Sessions of 90-100 mins.</li>
+              <li><strong>8 Hours Escalation:</strong> 4 Sessions of 2 Hours.</li>
+              <li><strong>10 Hours Peak Target:</strong> Maximum focus on solving Mock Papers.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- TAB 4: STUDY LOG -->
+      <section id="studyLogTab" class="tab-content">
+        <div class="log-grid">
+          <div class="card"><h3>Subject Hours Breakdown</h3><div id="subjectHoursChartContainer" class="subject-chart-container"></div></div>
+          <div class="card"><h3>Recent Study Log Entries</h3><table class="log-table"><thead><tr><th>Date</th><th>Subject</th><th>Hours</th><th>Topic</th><th>Action</th></tr></thead><tbody id="logHistoryTableBody"></tbody></table></div>
+        </div>
+      </section>
+
+      <!-- TAB 5: REVISION -->
+      <section id="revisionTab" class="tab-content">
+        <div class="flashcard-grid" id="flashcardsContainer"></div>
+      </section>
+
+      <!-- TAB 6: SHARE -->
+      <section id="shareTab" class="tab-content">
+        <div class="share-container card">
+          <h2><i class="fa-solid fa-share-nodes"></i> Export & Share Your Custom Plan</h2>
+          <div class="share-actions-grid">
+            <div class="share-box">
+              <h3>Export Study Plan (JSON)</h3>
+              <button id="exportPlanBtn" class="btn btn-primary btn-block"><i class="fa-solid fa-file-arrow-down"></i> Export Study Backup</button>
+            </div>
+            <div class="share-box">
+              <h3>Import Study Plan (JSON)</h3>
+              <input type="file" id="importFileInput" accept=".json" style="display:none;">
+              <button id="importPlanBtn" class="btn btn-secondary btn-block"><i class="fa-solid fa-file-arrow-up"></i> Import Backup File</button>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settingsModal" class="modal">
+    <div class="modal-content card">
+      <div class="modal-header"><h3>Settings</h3><button id="closeSettingsBtn" class="close-btn">&times;</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label>Daily Hours Goal:</label><select id="targetHoursSelect" class="form-control"><option value="6">6 Hrs</option><option value="8" selected>8 Hrs</option><option value="10">10 Hrs</option></select></div>
+      </div>
+      <div class="modal-footer"><button id="saveSettingsBtn" class="btn btn-primary">Save</button></div>
+    </div>
+  </div>
+
+  <!-- Custom Exam Modal -->
+  <div id="customExamModal" class="modal">
+    <div class="modal-content card">
+      <div class="modal-header"><h3>Create Custom Exam Plan</h3><button id="closeCustomExamBtn" class="close-btn">&times;</button></div>
+      <div class="modal-body">
+        <div class="form-group"><label>Exam Name:</label><input type="text" id="customExamNameInput" class="form-control" placeholder="e.g. State PSC 2026" required></div>
+        <div class="form-group"><label>Exam Date:</label><input type="date" id="customExamDateInput" class="form-control" required></div>
+        <div class="form-group"><label>Form Release Date:</label><input type="date" id="customFormDateInput" class="form-control" required></div>
+        <div class="form-group"><label>Subjects (Comma Separated):</label><input type="text" id="customSubjectsInput" class="form-control" placeholder="Polity, History, Economy, Reasoning" required></div>
+      </div>
+      <div class="modal-footer"><button id="saveCustomExamBtn" class="btn btn-primary">Create Custom Exam Profile</button></div>
+    </div>
+  </div>
+
+  <script>
+    const EXAM_PACKS = {
+      apfc2026: { id: 'apfc2026', title: 'UPSC Assistant Provident Fund Commissioner (APFC) 2026', subtitle: 'Ministry of Labour & Employment', category: 'UPSC RECRUITMENT', formDate: '2026-08-22T00:00:00', examDate: '2026-12-19T09:30:00', defaultTargetHours: 8, syllabus: [ { id: 'apfc_ir', title: 'Industrial Relations & Labour Laws', isCore: true, topics: [ { id: 'ir1', name: 'Trade Unions Act 1926' }, { id: 'ir2', name: 'Industrial Disputes Act 1947' }, { id: 'ir3', name: 'The 4 New Labour Codes 2020' } ] }, { id: 'apfc_ss', title: 'Social Security in India', isCore: true, topics: [ { id: 'ss1', name: 'EPF & MP Act 1952 (EPF, EPS, EDLI)' }, { id: 'ss2', name: 'ESI Act 1948 & Gratuity Act 1972' } ] }, { id: 'apfc_acc', title: 'General Accounting Principles', isCore: true, topics: [ { id: 'acc1', name: 'Double Entry System & Ledger' }, { id: 'acc2', name: 'Trial Balance & Depreciation' } ] } ], flashcards: [ { tag: 'Labour Law', title: 'The 4 New Labour Codes (2020)', items: ['Code on Wages 2019', 'Industrial Relations Code 2020', 'Code on Social Security 2020', 'OSHWC Code 2020'] } ] },
+      epfo2026: { id: 'epfo2026', title: 'UPSC EPFO Enforcement Officer / Accounts Officer (EO/AO) 2026', subtitle: 'EPFO Group B Officer', category: 'UPSC RECRUITMENT', formDate: '2026-08-22T00:00:00', examDate: '2026-12-19T09:30:00', defaultTargetHours: 8, syllabus: [ { id: 'eo_eng', title: 'General English', isCore: false, topics: [ { id: 'e1', name: 'Grammar & Vocabulary' } ] }, { id: 'eo_ir', title: 'Industrial Relations & Accounting', isCore: true, topics: [ { id: 'eo1', name: 'Labour Laws & Accounting Principles' } ] } ], flashcards: [] },
+      cse2027: { id: 'cse2027', title: 'UPSC Civil Services Examination (CSE / IAS) 2027', subtitle: 'IAS, IPS, IFS & Central Services', category: 'UPSC CIVIL SERVICES', formDate: '2027-02-10T00:00:00', examDate: '2027-05-23T09:30:00', defaultTargetHours: 10, syllabus: [ { id: 'cse_pol', title: 'Polity & Governance', isCore: true, topics: [ { id: 'pol1', name: 'Constitutional Rights & Articles' } ] }, { id: 'cse_hist', title: 'History & Art/Culture', isCore: true, topics: [ { id: 'h1', name: 'Modern Freedom Movement' } ] } ], flashcards: [] },
+      capf2027: { id: 'capf2027', title: 'UPSC CAPF Assistant Commandant (AC) 2027', subtitle: 'BSF, CRPF, CISF, ITBP', category: 'UPSC ARMED FORCES', formDate: '2027-04-21T00:00:00', examDate: '2027-08-01T10:00:00', defaultTargetHours: 8, syllabus: [ { id: 'c_p1', title: 'Paper 1: General Ability & Intelligence', isCore: true, topics: [ { id: 'cp1', name: 'Quant, Science & GK' } ] } ], flashcards: [] },
+      cds2027: { id: 'cds2027', title: 'UPSC Combined Defence Services (CDS) 2027', subtitle: 'IMA, INA, AFA & OTA Entry', category: 'UPSC DEFENCE', formDate: '2026-12-20T00:00:00', examDate: '2027-04-18T09:00:00', defaultTargetHours: 6, syllabus: [ { id: 'cds_eng', title: 'English & General Knowledge', isCore: true, topics: [ { id: 'cd1', name: 'Grammar, Science & Polity' } ] } ], flashcards: [] }
+    };
+
+    class UniversalAppState {
+      constructor() {
+        this.activeExamId = localStorage.getItem('upsc_universal_active_exam') || 'apfc2026';
+        this.customExams = JSON.parse(localStorage.getItem('upsc_universal_custom_exams') || '{}');
+        this.studyLogs = JSON.parse(localStorage.getItem('upsc_universal_study_logs') || '[]');
+        this.pomoSessionsToday = parseInt(localStorage.getItem('upsc_universal_pomo_today') || '0', 10);
+        this.initActiveExamData();
+      }
+      getActivePack() { return EXAM_PACKS[this.activeExamId] || this.customExams[this.activeExamId] || EXAM_PACKS.apfc2026; }
+      initActiveExamData() {
+        const pack = this.getActivePack();
+        this.formReleaseDate = new Date(pack.formDate);
+        this.examDate = new Date(pack.examDate);
+        this.dailyTargetHours = pack.defaultTargetHours || 8;
+        this.syllabusData = JSON.parse(localStorage.getItem(`upsc_syllabus_${this.activeExamId}`) || '{}');
+      }
+      saveSyllabus() { localStorage.setItem(`upsc_syllabus_${this.activeExamId}`, JSON.stringify(this.syllabusData)); }
+      saveLogs() { localStorage.setItem('upsc_universal_study_logs', JSON.stringify(this.studyLogs)); }
+      saveCustomExams() { localStorage.setItem('upsc_universal_custom_exams', JSON.stringify(this.customExams)); }
+      switchExam(id) { this.activeExamId = id; localStorage.setItem('upsc_universal_active_exam', id); this.initActiveExamData(); }
+    }
+
+    const appState = new UniversalAppState();
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initTabs(); initExamSelector(); initCountdowns(); renderActiveExamBanner(); renderSyllabus(); renderDashboardWidget(); renderStudyLogs(); renderFlashcards(); initPomodoro(); initSettingsModal(); initCustomExamModal(); initQuickLogForm(); initShareActions();
+    });
+
+    function initTabs() {
+      document.querySelectorAll('.nav-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+          tab.classList.add('active');
+          document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+        });
+      });
+    }
+
+    function initExamSelector() {
+      const select = document.getElementById('activeExamSelect');
+      Object.keys(appState.customExams).forEach(id => {
+        const option = document.createElement('option'); option.value = id; option.textContent = `✏️ ${appState.customExams[id].title}`;
+        select.insertBefore(option, select.querySelector('option[value="custom"]'));
+      });
+      select.value = appState.activeExamId;
+      select.addEventListener('change', (e) => {
+        if (e.target.value === 'custom') { document.getElementById('customExamModal').classList.add('active'); select.value = appState.activeExamId; return; }
+        appState.switchExam(e.target.value); renderActiveExamBanner(); renderSyllabus(); renderDashboardWidget(); renderStudyLogs(); renderFlashcards(); updateTimerDisplays();
+      });
+    }
+
+    function renderActiveExamBanner() {
+      const pack = appState.getActivePack();
+      document.getElementById('activeExamTitle').textContent = pack.title;
+      document.getElementById('activeExamSubtitle').textContent = pack.subtitle;
+      document.getElementById('activeExamCategoryBadge').textContent = pack.category || 'UPSC EXAM';
+      document.getElementById('formTargetDateText').textContent = `Target: ${new Date(pack.formDate).toDateString()}`;
+      document.getElementById('examTargetDateText').textContent = `Target: ${new Date(pack.examDate).toDateString()}`;
+
+      const logSelect = document.getElementById('logSubjectSelect'); logSelect.innerHTML = '';
+      if (pack.syllabus) pack.syllabus.forEach(mod => { const opt = document.createElement('option'); opt.value = mod.title; opt.textContent = mod.title; logSelect.appendChild(opt); });
+    }
+
+    function initCountdowns() { updateTimerDisplays(); setInterval(updateTimerDisplays, 1000); }
+    function updateTimerDisplays() {
+      const now = new Date();
+      const formDiff = appState.formReleaseDate - now;
+      if (formDiff > 0) {
+        document.getElementById('formDays').textContent = String(Math.floor(formDiff / (1000 * 60 * 60 * 24))).padStart(2, '0');
+        document.getElementById('formHours').textContent = String(Math.floor((formDiff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+        document.getElementById('formMinutes').textContent = String(Math.floor((formDiff / (1000 * 60)) % 60)).padStart(2, '0');
+        document.getElementById('formSeconds').textContent = String(Math.floor((formDiff / 1000) % 60)).padStart(2, '0');
+      } else { document.getElementById('formCountdown').innerHTML = `<div style="font-weight:700; color:#10b981;">FORM IS LIVE NOW!</div>`; }
+
+      const examDiff = appState.examDate - now;
+      if (examDiff > 0) {
+        const eDays = Math.floor(examDiff / (1000 * 60 * 60 * 24));
+        document.getElementById('examDays').textContent = String(eDays).padStart(3, '0');
+        document.getElementById('examHours').textContent = String(Math.floor((examDiff / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+        document.getElementById('examMinutes').textContent = String(Math.floor((examDiff / (1000 * 60)) % 60)).padStart(2, '0');
+        document.getElementById('examSeconds').textContent = String(Math.floor((examDiff / 1000) % 60)).padStart(2, '0');
+        document.getElementById('estStudyHoursLeft').textContent = Math.floor(eDays * appState.dailyTargetHours).toLocaleString();
+        document.getElementById('currentDailyTargetDisplay').textContent = `${appState.dailyTargetHours} Hours/Day`;
+      } else { document.getElementById('examCountdown').innerHTML = `<div style="font-weight:700; color:#ef4444;">EXAM DAY IS HERE!</div>`; }
+    }
+
+    function renderSyllabus() {
+      const container = document.getElementById('syllabusContainer'); container.innerHTML = '';
+      const pack = appState.getActivePack();
+      let totalTopics = 0, completedTopics = 0, revisedTopicsCount = 0, coreCompleted = 0;
+      if (!pack.syllabus) return;
+
+      pack.syllabus.forEach(module => {
+        const card = document.createElement('div'); card.className = 'module-card';
+        let modTotal = module.topics.length, modDone = 0;
+        const topicItemsHTML = module.topics.map(topic => {
+          totalTopics++;
+          const p = appState.syllabusData[topic.id] || { concept: false, rev1: false, rev2: false, pyq: false };
+          if (p.concept && (p.pyq || p.rev1)) modDone++;
+          if (p.concept && p.rev1 && p.rev2) revisedTopicsCount++;
+          return `
+            <div class="topic-item">
+              <div class="topic-name"><span>${topic.name}</span></div>
+              <div class="topic-stages">
+                <label class="stage-check"><input type="checkbox" data-topic="${topic.id}" data-stage="concept" ${p.concept ? 'checked' : ''}> Concepts</label>
+                <label class="stage-check"><input type="checkbox" data-topic="${topic.id}" data-stage="rev1" ${p.rev1 ? 'checked' : ''}> Rev 1</label>
+                <label class="stage-check"><input type="checkbox" data-topic="${topic.id}" data-stage="rev2" ${p.rev2 ? 'checked' : ''}> Rev 2</label>
+                <label class="stage-check"><input type="checkbox" data-topic="${topic.id}" data-stage="pyq" ${p.pyq ? 'checked' : ''}> PYQs</label>
+              </div>
+            </div>
+          `;
+        }).join('');
+        if (module.isCore && (modDone / modTotal >= 0.5)) coreCompleted++;
+        completedTopics += (modDone === modTotal) ? modTotal : modDone;
+        const percent = Math.round((modDone / modTotal) * 100) || 0;
+        card.innerHTML = `<div class="module-card-header"><div class="module-title-area"><h3>${module.title}</h3></div><div style="font-weight:700; color:var(--accent-primary);">${percent}% (${modDone}/${modTotal})</div></div><div class="topic-list">${topicItemsHTML}</div>`;
+        container.appendChild(card);
+      });
+
+      container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        checkbox.addEventListener('change', (e) => {
+          const topicId = e.target.getAttribute('data-topic');
+          const stage = e.target.getAttribute('data-stage');
+          if (!appState.syllabusData[topicId]) appState.syllabusData[topicId] = { concept: false, rev1: false, rev2: false, pyq: false };
+          appState.syllabusData[topicId][stage] = e.target.checked;
+          appState.saveSyllabus(); renderSyllabus(); renderDashboardWidget();
+        });
+      });
+
+      const overallPercent = Math.round((completedTopics / totalTopics) * 100) || 0;
+      document.getElementById('syllabusPercentDisplay').textContent = `${overallPercent}%`;
+      document.getElementById('syllabusProgressFill').style.width = `${overallPercent}%`;
+      document.getElementById('highWeightageProgressDisplay').textContent = `${coreCompleted} Modules`;
+      document.getElementById('revisionCompletedDisplay').textContent = `${revisedTopicsCount} Topics`;
+    }
+
+    function renderDashboardWidget() {
+      const widgetList = document.getElementById('subjectDashboardList'); widgetList.innerHTML = '';
+      const pack = appState.getActivePack(); if (!pack.syllabus) return;
+      pack.syllabus.forEach(mod => {
+        let modTotal = mod.topics.length, modDone = 0;
+        mod.topics.forEach(t => { const p = appState.syllabusData[t.id]; if (p && p.concept && (p.pyq || p.rev1)) modDone++; });
+        const percent = Math.round((modDone / modTotal) * 100) || 0;
+        const item = document.createElement('div'); item.className = 'subject-progress-item';
+        item.innerHTML = `<div class="subject-progress-meta"><strong>${mod.title}</strong><span>${percent}%</span></div><div class="subject-progress-bar"><div class="subject-progress-bar-fill" style="width: ${percent}%; background: var(--accent-primary);"></div></div>`;
+        widgetList.appendChild(item);
+      });
+    }
+
+    function initQuickLogForm() {
+      document.getElementById('quickLogForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        appState.studyLogs.unshift({ id: Date.now(), examId: appState.activeExamId, date: new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }), subject: document.getElementById('logSubjectSelect').value, hours: parseFloat(document.getElementById('logHoursInput').value), note: document.getElementById('logTopicNote').value || 'Study Session' });
+        appState.saveLogs(); renderStudyLogs(); alert('Log saved!');
+      });
+    }
+
+    function renderStudyLogs() {
+      const tableBody = document.getElementById('logHistoryTableBody'); tableBody.innerHTML = '';
+      let totalHours = 0, todayHours = 0;
+      const todayStr = new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      appState.studyLogs.forEach(log => {
+        totalHours += log.hours; if (log.date === todayStr) todayHours += log.hours;
+        const row = document.createElement('tr');
+        row.innerHTML = `<td>${log.date}</td><td><strong>${log.subject}</strong></td><td><span class="badge badge-warning">${log.hours} hrs</span></td><td>${log.note}</td><td><button class="btn btn-secondary" onclick="deleteLogEntry(${log.id})"><i class="fa-solid fa-trash"></i></button></td>`;
+        tableBody.appendChild(row);
+      });
+      document.getElementById('totalHoursStudiedDisplay').textContent = `${totalHours.toFixed(1)} hrs`;
+      document.getElementById('todayHoursSubtext').textContent = `Today: ${todayHours.toFixed(1)} hrs`;
+    }
+
+    function deleteLogEntry(id) { appState.studyLogs = appState.studyLogs.filter(l => l.id !== id); appState.saveLogs(); renderStudyLogs(); }
+
+    function renderFlashcards() {
+      const container = document.getElementById('flashcardsContainer'); container.innerHTML = '';
+      const pack = appState.getActivePack(); if (!pack.flashcards) return;
+      pack.flashcards.forEach(card => {
+        const item = document.createElement('div'); item.className = 'card flashcard';
+        item.innerHTML = `<div class="flashcard-tag">${card.tag}</div><h3>${card.title}</h3><ul>${card.items.map(i => `<li>${i}</li>`).join('')}</ul>`;
+        container.appendChild(item);
+      });
+    }
+
+    let pomoTimerInterval = null, pomoSecondsLeft = 50 * 60, currentPomoMode = 'work';
+    function initPomodoro() {
+      document.querySelectorAll('.pomo-mode-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.pomo-mode-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
+          currentPomoMode = btn.getAttribute('data-mode');
+          if (currentPomoMode === 'work') pomoSecondsLeft = 50 * 60; else if (currentPomoMode === 'shortBreak') pomoSecondsLeft = 10 * 60; else pomoSecondsLeft = 20 * 60;
+          pausePomoTimer(); updatePomoDisplay();
+        });
+      });
+      document.getElementById('pomoStartBtn').addEventListener('click', startPomoTimer);
+      document.getElementById('pomoPauseBtn').addEventListener('click', pausePomoTimer);
+      document.getElementById('pomoResetBtn').addEventListener('click', resetPomoTimer);
+    }
+
+    function startPomoTimer() {
+      document.getElementById('pomoStartBtn').style.display = 'none'; document.getElementById('pomoPauseBtn').style.display = 'inline-flex';
+      if (pomoTimerInterval) clearInterval(pomoTimerInterval);
+      pomoTimerInterval = setInterval(() => {
+        pomoSecondsLeft--; updatePomoDisplay();
+        if (pomoSecondsLeft <= 0) { clearInterval(pomoTimerInterval); alert('Session complete!'); resetPomoTimer(); }
+      }, 1000);
+    }
+    function pausePomoTimer() { clearInterval(pomoTimerInterval); document.getElementById('pomoStartBtn').style.display = 'inline-flex'; document.getElementById('pomoPauseBtn').style.display = 'none'; }
+    function resetPomoTimer() { pausePomoTimer(); pomoSecondsLeft = 50 * 60; updatePomoDisplay(); }
+    function updatePomoDisplay() { document.getElementById('pomoMinutes').textContent = String(Math.floor(pomoSecondsLeft / 60)).padStart(2, '0'); document.getElementById('pomoSeconds').textContent = String(pomoSecondsLeft % 60).padStart(2, '0'); }
+
+    function initSettingsModal() {
+      const modal = document.getElementById('settingsModal');
+      document.getElementById('settingsBtn').addEventListener('click', () => modal.classList.add('active'));
+      document.getElementById('closeSettingsBtn').addEventListener('click', () => modal.classList.remove('active'));
+      document.getElementById('saveSettingsBtn').addEventListener('click', () => { appState.dailyTargetHours = parseInt(document.getElementById('targetHoursSelect').value, 10); updateTimerDisplays(); modal.classList.remove('active'); });
+    }
+
+    function initCustomExamModal() {
+      const modal = document.getElementById('customExamModal');
+      document.getElementById('customExamModalBtn').addEventListener('click', () => modal.classList.add('active'));
+      document.getElementById('closeCustomExamBtn').addEventListener('click', () => modal.classList.remove('active'));
+      document.getElementById('saveCustomExamBtn').addEventListener('click', () => {
+        const name = document.getElementById('customExamNameInput').value;
+        const examD = document.getElementById('customExamDateInput').value;
+        const formD = document.getElementById('customFormDateInput').value;
+        const subStr = document.getElementById('customSubjectsInput').value;
+        if (!name || !examD || !formD) return;
+        const customId = `custom_${Date.now()}`;
+        const subjects = subStr ? subStr.split(',').map(s => s.trim()) : ['General Studies'];
+        const syllabus = subjects.map((subj, idx) => ({ id: `${customId}_s_${idx}`, title: subj, isCore: idx < 2, topics: [{ id: `${customId}_t_${idx}_1`, name: `${subj} Concepts` }] }));
+        appState.customExams[customId] = { id: customId, title: name, subtitle: 'Custom Aspirant Plan', category: 'CUSTOM EXAM', formDate: `${formD}T00:00:00`, examDate: `${examD}T09:30:00`, defaultTargetHours: 8, syllabus, flashcards: [] };
+        appState.saveCustomExams(); modal.classList.remove('active');
+        const select = document.getElementById('activeExamSelect'); const opt = document.createElement('option'); opt.value = customId; opt.textContent = `✏️ ${name}`;
+        select.insertBefore(opt, select.querySelector('option[value="custom"]'));
+        appState.switchExam(customId); select.value = customId; renderActiveExamBanner(); renderSyllabus(); renderDashboardWidget(); renderStudyLogs(); updateTimerDisplays();
+      });
+    }
+
+    function initShareActions() {
+      document.getElementById('exportPlanBtn').addEventListener('click', () => {
+        const data = { activeExam: appState.activeExamId, customExams: appState.customExams, syllabusProgress: appState.syllabusData, studyLogs: appState.studyLogs };
+        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = `UPSC_Study_Plan_${appState.activeExamId}.json`; a.click();
+      });
+      const fileInput = document.getElementById('importFileInput');
+      document.getElementById('importPlanBtn').addEventListener('click', () => fileInput.click());
+      fileInput.addEventListener('change', (e) => {
+        const file = e.target.files[0]; if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (evt) => {
+          try {
+            const imp = JSON.parse(evt.target.result);
+            if (imp.customExams) appState.customExams = { ...appState.customExams, ...imp.customExams };
+            if (imp.syllabusProgress) appState.syllabusData = { ...appState.syllabusData, ...imp.syllabusProgress };
+            appState.saveCustomExams(); appState.saveLogs(); renderSyllabus(); alert('Plan imported successfully!');
+          } catch (err) { alert('Invalid backup file'); }
+        }; reader.readAsText(file);
+      });
+    }
+  </script>
+</body>
+</html>
