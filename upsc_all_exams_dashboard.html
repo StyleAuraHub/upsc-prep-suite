@@ -4,10 +4,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Universal UPSC Exam Preparation Command Center</title>
+  <meta name="theme-color" content="#3b82f6">
+  <meta name="description" content="Official 9-Section UPSC APFC, EPFO EO/AO and Civil Services Exam Prep Suite">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2991/2991106.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    /* Universal UPSC Prep Suite Stylesheet */
     :root {
       --bg-primary: #0f172a;
       --bg-card: #1e293b;
@@ -23,43 +26,32 @@
       --border-color: #334155;
       --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
       --font-mono: 'JetBrains Mono', monospace;
-      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
-      --shadow-md: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
       --radius-sm: 8px;
       --radius-md: 12px;
-      --radius-lg: 18px;
     }
-
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background-color: var(--bg-primary); color: var(--text-main); font-family: var(--font-sans); line-height: 1.5; min-height: 100vh; }
     .app-container { max-width: 1380px; margin: 0 auto; padding: 20px; }
 
-    /* Header */
-    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 20px; box-shadow: var(--shadow-sm); flex-wrap: wrap; gap: 16px; }
+    .app-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); margin-bottom: 20px; flex-wrap: wrap; gap: 16px; }
     .brand { display: flex; align-items: center; gap: 16px; }
     .brand-logo { width: 48px; height: 48px; background: linear-gradient(135deg, #10b981, #3b82f6); border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 24px; color: #fff; }
-    .brand-text h1 { font-size: 1.4rem; font-weight: 800; letter-spacing: -0.5px; }
+    .brand-text h1 { font-size: 1.4rem; font-weight: 800; }
     .brand-text p { font-size: 0.85rem; color: var(--text-muted); }
     .header-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
 
     .exam-selector-box { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-muted); }
     .exam-select-dropdown { width: auto; background: var(--bg-primary); color: #60a5fa; font-weight: 700; border: 1px solid var(--accent-primary); padding: 8px 12px; border-radius: var(--radius-sm); cursor: pointer; }
+    .daily-hours-badge { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; cursor: pointer; }
 
-    .daily-hours-badge { background: rgba(59, 130, 246, 0.12); border: 1px solid rgba(59, 130, 246, 0.3); color: #60a5fa; padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; }
-
-    /* Navigation Tabs */
     .nav-tabs { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 8px; margin-bottom: 24px; }
-    .nav-tab { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 12px 20px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: all 0.2s ease; white-space: nowrap; }
-    .nav-tab:hover { background: var(--bg-card-hover); color: var(--text-main); }
-    .nav-tab.active { background: var(--accent-primary); border-color: var(--accent-primary); color: #fff; box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3); }
+    .nav-tab { background: var(--bg-card); border: 1px solid var(--border-color); color: var(--text-muted); padding: 12px 20px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; cursor: pointer; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+    .nav-tab.active { background: var(--accent-primary); border-color: var(--accent-primary); color: #fff; }
 
-    /* Tab Content Visibility */
     .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+    .tab-content.active { display: block; }
+    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; }
 
-    /* Cards Base */
-    .card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 24px; box-shadow: var(--shadow-sm); }
     .active-exam-banner { margin-bottom: 20px; border-left: 4px solid var(--accent-primary); background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent); }
     .active-exam-banner h2 { font-size: 1.4rem; margin-top: 4px; }
     .active-exam-banner p { color: var(--text-muted); font-size: 0.9rem; }
@@ -68,51 +60,43 @@
     .countdown-card { position: relative; overflow: hidden; display: flex; flex-direction: column; justify-content: space-between; }
     .form-release-card { border-top: 4px solid var(--accent-warning); }
     .exam-date-card { border-top: 4px solid var(--accent-danger); }
-    .card-header { margin-bottom: 16px; }
-    .card-header h2 { font-size: 1.3rem; font-weight: 700; margin-top: 8px; display: flex; align-items: center; gap: 10px; }
-    .target-date-subtitle { color: var(--text-muted); font-size: 0.85rem; margin-top: 2px; }
+    .card-header h2 { font-size: 1.3rem; font-weight: 700; margin-top: 8px; }
+    .target-date-subtitle { color: var(--text-muted); font-size: 0.85rem; }
 
-    .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; letter-spacing: 0.5px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; padding: 4px 10px; border-radius: 12px; }
     .badge-warning { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
     .badge-danger { background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
 
-    /* Timer Display */
-    .timer-display { display: flex; align-items: center; justify-content: space-around; background: rgba(15, 23, 42, 0.6); padding: 18px 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255, 255, 255, 0.05); margin: 12px 0; }
+    .timer-display { display: flex; align-items: center; justify-content: space-around; background: rgba(15, 23, 42, 0.6); padding: 18px 12px; border-radius: var(--radius-sm); margin: 12px 0; }
     .time-unit { display: flex; flex-direction: column; align-items: center; }
-    .time-value { font-family: var(--font-mono); font-size: 2.2rem; font-weight: 700; color: #ffffff; line-height: 1; }
-    .time-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; margin-top: 6px; letter-spacing: 1px; }
-    .time-sep { font-family: var(--font-mono); font-size: 2rem; color: var(--text-muted); margin-bottom: 14px; }
+    .time-value { font-family: var(--font-mono); font-size: 2.2rem; font-weight: 700; color: #ffffff; }
+    .time-label { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; }
+    .time-sep { font-family: var(--font-mono); font-size: 2rem; color: var(--text-muted); }
     .hours-remaining-banner { background: rgba(59, 130, 246, 0.1); border: 1px dashed rgba(59, 130, 246, 0.4); padding: 12px; border-radius: var(--radius-sm); text-align: center; font-size: 0.9rem; color: #93c5fd; }
     .highlight-val { font-weight: 800; font-size: 1.1rem; color: #38bdf8; }
 
-    /* Metrics Grid */
     .metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; margin-bottom: 24px; }
     .metric-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 20px; display: flex; align-items: center; gap: 16px; }
-    .metric-icon { width: 52px; height: 52px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+    .metric-icon { width: 52px; height: 52px; border-radius: var(--radius-sm); display: flex; align-items: center; justify-content: center; font-size: 22px; }
     .metric-icon.blue { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
     .metric-icon.green { background: rgba(16, 185, 129, 0.15); color: #34d399; }
     .metric-icon.purple { background: rgba(139, 92, 246, 0.15); color: #a78bfa; }
     .metric-icon.orange { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
-    .metric-data h4 { font-size: 1.4rem; font-weight: 800; line-height: 1.1; }
-    .metric-data p { font-size: 0.85rem; color: var(--text-muted); margin-top: 2px; }
+    .metric-data h4 { font-size: 1.4rem; font-weight: 800; }
     .mini-progress-bar { height: 6px; background: rgba(255, 255, 255, 0.1); border-radius: 3px; margin-top: 8px; overflow: hidden; }
-    .mini-progress-bar div { height: 100%; background: var(--accent-primary); transition: width 0.4s ease; }
+    .mini-progress-bar div { height: 100%; background: var(--accent-primary); }
 
-    /* Widgets Grid */
     .dashboard-widgets-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(380px, 1fr)); gap: 20px; }
-    .widget-card h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
     .subject-progress-item { margin-bottom: 14px; }
     .subject-progress-meta { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 6px; }
     .subject-progress-bar { height: 8px; background: var(--bg-primary); border-radius: 4px; overflow: hidden; }
-    .subject-progress-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s ease; }
+    .subject-progress-bar-fill { height: 100%; border-radius: 4px; }
 
-    /* Forms & Inputs */
     .form-group { margin-bottom: 16px; }
     .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); margin-bottom: 6px; }
-    .form-control { width: 100%; padding: 10px 14px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-main); font-family: var(--font-sans); font-size: 0.9rem; }
+    .form-control { width: 100%; padding: 10px 14px; background: var(--bg-primary); border: 1px solid var(--border-color); border-radius: var(--radius-sm); color: var(--text-main); font-size: 0.9rem; }
 
-    /* Buttons */
-    .btn { padding: 10px 18px; border-radius: var(--radius-sm); font-family: var(--font-sans); font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: all 0.2s ease; }
+    .btn { padding: 10px 18px; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.9rem; border: none; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
     .btn-primary { background: var(--accent-primary); color: #fff; }
     .btn-secondary { background: var(--bg-card-hover); color: var(--text-main); border: 1px solid var(--border-color); }
     .btn-success { background: var(--accent-success); color: #fff; }
@@ -120,46 +104,42 @@
     .btn-block { width: 100%; }
     .btn-lg { padding: 14px 28px; font-size: 1rem; }
 
-    /* Syllabus Tab */
     .syllabus-modules-container { display: flex; flex-direction: column; gap: 20px; }
     .module-card { background: var(--bg-card); border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden; }
     .module-card-header { padding: 18px 24px; background: rgba(255, 255, 255, 0.02); border-bottom: 1px solid var(--border-color); display: flex; justify-content: space-between; align-items: center; }
-    .module-title-area { display: flex; align-items: center; gap: 12px; }
-    .module-badge { padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
-    .badge-core { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .badge-std { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
     .topic-list { padding: 12px 24px; }
     .topic-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
-    .topic-item:last-child { border-bottom: none; }
     .topic-stages { display: flex; gap: 12px; }
     .stage-check { display: flex; align-items: center; gap: 4px; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; }
     .stage-check input[type="checkbox"] { accent-color: var(--accent-primary); width: 16px; height: 16px; }
 
-    /* Pomodoro */
     .pomodoro-layout { display: grid; grid-template-columns: 1fr 340px; gap: 20px; }
     .pomodoro-card { text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px; }
     .pomodoro-modes { display: flex; gap: 10px; margin-bottom: 30px; }
     .pomo-mode-btn { padding: 8px 16px; background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-muted); border-radius: 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer; }
-    .pomo-mode-btn.active { background: var(--accent-primary); color: #fff; border-color: var(--accent-primary); }
-    .pomodoro-timer-ring { width: 240px; height: 240px; border-radius: 50%; border: 8px solid var(--accent-primary); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 30px; }
+    .pomo-mode-btn.active { background: var(--accent-primary); color: #fff; }
+    .pomodoro-timer-ring { width: 240px; height: 240px; border-radius: 50%; border: 8px solid var(--accent-primary); display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 30px; transition: border-color 0.3s ease; }
     .timer-clock-text { font-family: var(--font-mono); font-size: 3.8rem; font-weight: 700; line-height: 1; }
     .pomodoro-controls { display: flex; gap: 16px; margin-bottom: 24px; }
+    .bg-timer-status { font-size: 0.8rem; color: #34d399; margin-top: 6px; display: flex; align-items: center; gap: 6px; }
 
-    /* Logs & Share */
     .log-grid, .share-actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
     .log-table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 0.85rem; }
     .log-table th, .log-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border-color); }
-    .flashcard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+    .flashcard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
     .flashcard { position: relative; border-top: 4px solid var(--accent-primary); }
     .flashcard-tag { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; margin-bottom: 10px; background: rgba(59, 130, 246, 0.2); color: #60a5fa; }
     .share-box { background: var(--bg-primary); padding: 20px; border-radius: var(--radius-sm); border: 1px solid var(--border-color); text-align: center; }
 
-    /* Modal */
     .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.7); z-index: 1000; align-items: center; justify-content: center; }
     .modal.active { display: flex; }
     .modal-content { width: 90%; max-width: 500px; }
     .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
     .close-btn { background: none; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; }
+
+    .hour-pills { display: flex; gap: 8px; margin-top: 8px; }
+    .hour-pill { padding: 6px 12px; background: var(--bg-primary); border: 1px solid var(--border-color); color: var(--text-main); border-radius: 16px; font-size: 0.85rem; cursor: pointer; }
+    .hour-pill.active { background: var(--accent-primary); border-color: var(--accent-primary); font-weight: 700; }
 
     @media (max-width: 768px) {
       .countdown-grid, .dashboard-widgets-grid, .log-grid, .pomodoro-layout, .share-actions-grid { grid-template-columns: 1fr; }
@@ -170,79 +150,51 @@
 <body class="dark-theme">
   <div class="app-container">
 
-    <!-- Top Navigation Header -->
     <header class="app-header">
       <div class="brand">
-        <div class="brand-logo">
-          <i class="fa-solid fa-compass-drafting"></i>
-        </div>
+        <div class="brand-logo"><i class="fa-solid fa-compass-drafting"></i></div>
         <div class="brand-text">
           <h1>Universal UPSC Prep Suite</h1>
-          <p>Multi-Exam Command Center for All UPSC Aspirants</p>
+          <p>Official UPSC Notifications Syllabus • Multi-Exam Suite</p>
         </div>
       </div>
 
       <div class="header-actions">
-        <!-- Exam Switcher Dropdown -->
         <div class="exam-selector-box">
           <label for="activeExamSelect"><i class="fa-solid fa-award"></i> Active Exam:</label>
           <select id="activeExamSelect" class="form-control exam-select-dropdown">
-            <option value="apfc2026" selected>UPSC APFC 2026 (Dec 19, 2026)</option>
-            <option value="epfo2026">UPSC EPFO EO/AO 2026 (Dec 19, 2026)</option>
-            <option value="cse2027">UPSC CSE / IAS 2027 (May 2027)</option>
-            <option value="capf2027">UPSC CAPF AC 2027 (Aug 2027)</option>
-            <option value="cds2027">UPSC CDS 2027 (Apr 2027)</option>
+            <option value="apfc_official" selected>⭐ UPSC APFC / EPFO EO-AO (Official 9 Sections)</option>
+            <option value="cse2027">UPSC CSE / IAS 2027 (Official Syllabus)</option>
+            <option value="capf2027">UPSC CAPF AC 2027 (Official Syllabus)</option>
+            <option value="cds2027">UPSC CDS 2027 (Official Syllabus)</option>
             <option value="custom">✏️ Custom Exam / Custom Target</option>
           </select>
         </div>
 
-        <div class="daily-hours-badge">
-          <i class="fa-solid fa-fire"></i>
-          <span>Study Goal: <strong id="currentDailyTargetDisplay">8 Hours/Day</strong></span>
+        <div class="daily-hours-badge" id="dailyHoursBadgeBtn" title="Click to change study goal!">
+          <i class="fa-solid fa-fire"></i><span>Goal: <strong id="currentDailyTargetDisplay">8 Hours/Day</strong></span>
         </div>
-
-        <button id="customExamModalBtn" class="btn btn-primary" title="Build custom exam plan">
-          <i class="fa-solid fa-plus"></i> New Custom Exam
-        </button>
-
-        <button id="settingsBtn" class="btn btn-secondary">
-          <i class="fa-solid fa-sliders"></i> Settings
-        </button>
+        <button id="customExamModalBtn" class="btn btn-primary"><i class="fa-solid fa-plus"></i> New Custom Exam</button>
+        <button id="settingsBtn" class="btn btn-secondary"><i class="fa-solid fa-sliders"></i> Settings</button>
       </div>
     </header>
 
-    <!-- Main Navigation Tabs -->
     <nav class="nav-tabs">
-      <button class="nav-tab active" data-tab="dashboardTab">
-        <i class="fa-solid fa-gauge-high"></i> Command Center
-      </button>
-      <button class="nav-tab" data-tab="syllabusTab">
-        <i class="fa-solid fa-list-check"></i> Syllabus Matrix
-      </button>
-      <button class="nav-tab" data-tab="pomodoroTab">
-        <i class="fa-solid fa-stopwatch"></i> Focus Timer
-      </button>
-      <button class="nav-tab" data-tab="studyLogTab">
-        <i class="fa-solid fa-chart-line"></i> Study Log & Stats
-      </button>
-      <button class="nav-tab" data-tab="revisionTab">
-        <i class="fa-solid fa-bolt"></i> High-Yield Revision
-      </button>
-      <button class="nav-tab" data-tab="shareTab">
-        <i class="fa-solid fa-share-nodes"></i> Export & Share Plan
-      </button>
+      <button class="nav-tab active" data-tab="dashboardTab"><i class="fa-solid fa-gauge-high"></i> Command Center</button>
+      <button class="nav-tab" data-tab="syllabusTab"><i class="fa-solid fa-list-check"></i> Official Syllabus</button>
+      <button class="nav-tab" data-tab="pomodoroTab"><i class="fa-solid fa-stopwatch"></i> Focus Timer</button>
+      <button class="nav-tab" data-tab="studyLogTab"><i class="fa-solid fa-chart-line"></i> Study Log & Stats</button>
+      <button class="nav-tab" data-tab="revisionTab"><i class="fa-solid fa-bolt"></i> High-Yield Revision</button>
+      <button class="nav-tab" data-tab="shareTab"><i class="fa-solid fa-share-nodes"></i> Export & Share Plan</button>
     </nav>
 
-    <!-- Tab Contents -->
     <main class="content-area">
-
-      <!-- TAB 1: COMMAND CENTER -->
       <section id="dashboardTab" class="tab-content active">
         <div class="active-exam-banner card">
           <div>
-            <span class="badge badge-warning" id="activeExamCategoryBadge">UPSC RECRUITMENT TEST</span>
-            <h2 id="activeExamTitle">UPSC Assistant Provident Fund Commissioner (APFC) 2026</h2>
-            <p id="activeExamSubtitle">Targeting Group 'A' Officers Cadre under Ministry of Labour & Employment</p>
+            <span class="badge badge-warning" id="activeExamCategoryBadge">OFFICIAL ADVERTISEMENT SYLLABUS</span>
+            <h2 id="activeExamTitle">UPSC APFC / EPFO EO-AO Official 9-Section Examination 2026</h2>
+            <p id="activeExamSubtitle">Strictly structured as per the 9 Official UPSC Advertisement Syllabus Heads</p>
           </div>
         </div>
 
@@ -265,7 +217,7 @@
             <div class="card-header">
               <span class="badge badge-danger"><i class="fa-solid fa-bullseye"></i> D-DAY EXAM</span>
               <h2><i class="fa-solid fa-calendar-check"></i> Examination Day</h2>
-              <p class="target-date-subtitle" id="examTargetDateText">Target: Saturday, 19 December 2026</p>
+              <p class="target-date-subtitle" id="examTargetDateText">Target: Sunday, 20 December 2026</p>
             </div>
             <div class="timer-display" id="examCountdown">
               <div class="time-unit"><span class="time-value" id="examDays">000</span><span class="time-label">Days</span></div><span class="time-sep">:</span>
@@ -274,29 +226,17 @@
               <div class="time-unit"><span class="time-value" id="examSeconds">00</span><span class="time-label">Secs</span></div>
             </div>
             <div class="hours-remaining-banner">
-              <i class="fa-solid fa-clock"></i> 
-              Est. Study Hours Available: <span id="estStudyHoursLeft" class="highlight-val">0</span> hrs
+              <i class="fa-solid fa-clock"></i> Est. Study Hours Available: <span id="estStudyHoursLeft" class="highlight-val">0</span> hrs
+              <small>(at <span id="targetHoursRateDisplay">8</span> hrs/day baseline)</small>
             </div>
           </div>
         </div>
 
         <div class="metrics-grid">
-          <div class="metric-card">
-            <div class="metric-icon blue"><i class="fa-solid fa-book-open"></i></div>
-            <div class="metric-data"><h4 id="syllabusPercentDisplay">0%</h4><p>Overall Syllabus Covered</p><div class="mini-progress-bar"><div id="syllabusProgressFill" style="width:0%"></div></div></div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-icon green"><i class="fa-solid fa-hourglass-half"></i></div>
-            <div class="metric-data"><h4 id="totalHoursStudiedDisplay">0.0 hrs</h4><p>Total Study Hours Logged</p><span class="metric-subtext" id="todayHoursSubtext">Today: 0.0 hrs</span></div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-icon purple"><i class="fa-solid fa-layer-group"></i></div>
-            <div class="metric-data"><h4 id="highWeightageProgressDisplay">0 Modules</h4><p>Core Focus Modules</p></div>
-          </div>
-          <div class="metric-card">
-            <div class="metric-icon orange"><i class="fa-solid fa-repeat"></i></div>
-            <div class="metric-data"><h4 id="revisionCompletedDisplay">0 Topics</h4><p>Fully Revised (2+ Revisions)</p></div>
-          </div>
+          <div class="metric-card"><div class="metric-icon blue"><i class="fa-solid fa-book-open"></i></div><div class="metric-data"><h4 id="syllabusPercentDisplay">0%</h4><p>Overall Syllabus Covered</p><div class="mini-progress-bar"><div id="syllabusProgressFill" style="width:0%"></div></div></div></div>
+          <div class="metric-card"><div class="metric-icon green"><i class="fa-solid fa-hourglass-half"></i></div><div class="metric-data"><h4 id="totalHoursStudiedDisplay">0.0 hrs</h4><p>Total Study Hours Logged</p><span class="metric-subtext" id="todayHoursSubtext">Today: 0.0 hrs</span></div></div>
+          <div class="metric-card"><div class="metric-icon purple"><i class="fa-solid fa-layer-group"></i></div><div class="metric-data"><h4 id="highWeightageProgressDisplay">0 Modules</h4><p>Core Focus Modules</p></div></div>
+          <div class="metric-card"><div class="metric-icon orange"><i class="fa-solid fa-repeat"></i></div><div class="metric-data"><h4 id="revisionCompletedDisplay">0 Topics</h4><p>Fully Revised (2+ Revisions)</p></div></div>
         </div>
 
         <div class="dashboard-widgets-grid">
@@ -309,19 +249,14 @@
             <form id="quickLogForm">
               <div class="form-group"><label>Select Subject</label><select id="logSubjectSelect" class="form-control" required></select></div>
               <div class="form-group"><label>Hours Spent</label><input type="number" id="logHoursInput" class="form-control" min="0.5" max="16" step="0.5" placeholder="2.5" required></div>
-              <div class="form-group"><label>Notes / Topics Covered</label><input type="text" id="logTopicNote" class="form-control" placeholder="Polity Constitutional Articles"></div>
+              <div class="form-group"><label>Notes / Topics Covered</label><input type="text" id="logTopicNote" class="form-control" placeholder="e.g. Polity Rights or Economics Inflation"></div>
               <button type="submit" class="btn btn-primary btn-block"><i class="fa-solid fa-plus"></i> Save Study Log Entry</button>
             </form>
           </div>
         </div>
       </section>
 
-      <!-- TAB 2: SYLLABUS MATRIX -->
-      <section id="syllabusTab" class="tab-content">
-        <div id="syllabusContainer" class="syllabus-modules-container"></div>
-      </section>
-
-      <!-- TAB 3: FOCUS TIMER -->
+      <section id="syllabusTab" class="tab-content"><div id="syllabusContainer" class="syllabus-modules-container"></div></section>
       <section id="pomodoroTab" class="tab-content">
         <div class="pomodoro-layout">
           <div class="card pomodoro-card">
@@ -330,7 +265,11 @@
               <button class="pomo-mode-btn" data-mode="shortBreak">Short Break (10 min)</button>
               <button class="pomo-mode-btn" data-mode="longBreak">Long Break (20 min)</button>
             </div>
-            <div class="pomodoro-timer-ring"><div class="timer-clock-text"><span id="pomoMinutes">50</span>:<span id="pomoSeconds">00</span></div><span id="pomoStatusText">Ready to Focus</span></div>
+            <div class="pomodoro-timer-ring" id="timerRing">
+              <div class="timer-clock-text"><span id="pomoMinutes">50</span>:<span id="pomoSeconds">00</span></div>
+              <span id="pomoStatusText">Ready to Focus</span>
+              <div class="bg-timer-status"><i class="fa-solid fa-shield-halved"></i> Background Precision Active</div>
+            </div>
             <div class="pomodoro-controls">
               <button id="pomoStartBtn" class="btn btn-lg btn-success"><i class="fa-solid fa-play"></i> Start Session</button>
               <button id="pomoPauseBtn" class="btn btn-lg btn-warning" style="display:none;"><i class="fa-solid fa-pause"></i> Pause</button>
@@ -340,6 +279,7 @@
           <div class="card pomo-tips-card">
             <h3><i class="fa-solid fa-lightbulb"></i> Recommended UPSC Study Routine</h3>
             <ul class="tips-list">
+              <li><strong>Background Running Enabled:</strong> Minimizing or switching tabs won't pause the timer! High-precision real time timestamp sync keeps it perfectly accurate.</li>
               <li><strong>6 Hours Baseline:</strong> 3 Sessions of 90-100 mins.</li>
               <li><strong>8 Hours Escalation:</strong> 4 Sessions of 2 Hours.</li>
               <li><strong>10 Hours Peak Target:</strong> Maximum focus on solving Mock Papers.</li>
@@ -347,52 +287,51 @@
           </div>
         </div>
       </section>
-
-      <!-- TAB 4: STUDY LOG -->
       <section id="studyLogTab" class="tab-content">
         <div class="log-grid">
           <div class="card"><h3>Subject Hours Breakdown</h3><div id="subjectHoursChartContainer" class="subject-chart-container"></div></div>
           <div class="card"><h3>Recent Study Log Entries</h3><table class="log-table"><thead><tr><th>Date</th><th>Subject</th><th>Hours</th><th>Topic</th><th>Action</th></tr></thead><tbody id="logHistoryTableBody"></tbody></table></div>
         </div>
       </section>
-
-      <!-- TAB 5: REVISION -->
-      <section id="revisionTab" class="tab-content">
-        <div class="flashcard-grid" id="flashcardsContainer"></div>
-      </section>
-
-      <!-- TAB 6: SHARE -->
+      <section id="revisionTab" class="tab-content"><div class="flashcard-grid" id="flashcardsContainer"></div></section>
       <section id="shareTab" class="tab-content">
         <div class="share-container card">
           <h2><i class="fa-solid fa-share-nodes"></i> Export & Share Your Custom Plan</h2>
           <div class="share-actions-grid">
-            <div class="share-box">
-              <h3>Export Study Plan (JSON)</h3>
-              <button id="exportPlanBtn" class="btn btn-primary btn-block"><i class="fa-solid fa-file-arrow-down"></i> Export Study Backup</button>
-            </div>
-            <div class="share-box">
-              <h3>Import Study Plan (JSON)</h3>
-              <input type="file" id="importFileInput" accept=".json" style="display:none;">
-              <button id="importPlanBtn" class="btn btn-secondary btn-block"><i class="fa-solid fa-file-arrow-up"></i> Import Backup File</button>
-            </div>
+            <div class="share-box"><h3>Export Study Plan (JSON)</h3><button id="exportPlanBtn" class="btn btn-primary btn-block"><i class="fa-solid fa-file-arrow-down"></i> Export Study Backup</button></div>
+            <div class="share-box"><h3>Import Study Plan (JSON)</h3><input type="file" id="importFileInput" accept=".json" style="display:none;"><button id="importPlanBtn" class="btn btn-secondary btn-block"><i class="fa-solid fa-file-arrow-up"></i> Import Backup File</button></div>
           </div>
         </div>
       </section>
     </main>
   </div>
 
-  <!-- Settings Modal -->
   <div id="settingsModal" class="modal">
     <div class="modal-content card">
-      <div class="modal-header"><h3>Settings</h3><button id="closeSettingsBtn" class="close-btn">&times;</button></div>
+      <div class="modal-header"><h3>Settings & Daily Goal</h3><button id="closeSettingsBtn" class="close-btn">&times;</button></div>
       <div class="modal-body">
-        <div class="form-group"><label>Daily Hours Goal:</label><select id="targetHoursSelect" class="form-control"><option value="6">6 Hrs</option><option value="8" selected>8 Hrs</option><option value="10">10 Hrs</option></select></div>
+        <div class="form-group">
+          <label>Target Daily Study Hours Goal:</label>
+          <select id="targetHoursSelect" class="form-control">
+            <option value="4">4 Hours / Day</option>
+            <option value="6">6 Hours / Day</option>
+            <option value="8" selected>8 Hours / Day</option>
+            <option value="10">10 Hours / Day</option>
+            <option value="12">12 Hours / Day</option>
+          </select>
+          <div class="hour-pills">
+            <span class="hour-pill" data-hrs="4">4h</span>
+            <span class="hour-pill" data-hrs="6">6h</span>
+            <span class="hour-pill active" data-hrs="8">8h</span>
+            <span class="hour-pill" data-hrs="10">10h</span>
+            <span class="hour-pill" data-hrs="12">12h</span>
+          </div>
+        </div>
       </div>
-      <div class="modal-footer"><button id="saveSettingsBtn" class="btn btn-primary">Save</button></div>
+      <div class="modal-footer"><button id="saveSettingsBtn" class="btn btn-primary">Save Changes</button></div>
     </div>
   </div>
 
-  <!-- Custom Exam Modal -->
   <div id="customExamModal" class="modal">
     <div class="modal-content card">
       <div class="modal-header"><h3>Create Custom Exam Plan</h3><button id="closeCustomExamBtn" class="close-btn">&times;</button></div>
@@ -408,39 +347,157 @@
 
   <script>
     const EXAM_PACKS = {
-      apfc2026: { id: 'apfc2026', title: 'UPSC Assistant Provident Fund Commissioner (APFC) 2026', subtitle: 'Ministry of Labour & Employment', category: 'UPSC RECRUITMENT', formDate: '2026-08-22T00:00:00', examDate: '2026-12-19T09:30:00', defaultTargetHours: 8, syllabus: [ { id: 'apfc_ir', title: 'Industrial Relations & Labour Laws', isCore: true, topics: [ { id: 'ir1', name: 'Trade Unions Act 1926' }, { id: 'ir2', name: 'Industrial Disputes Act 1947' }, { id: 'ir3', name: 'The 4 New Labour Codes 2020' } ] }, { id: 'apfc_ss', title: 'Social Security in India', isCore: true, topics: [ { id: 'ss1', name: 'EPF & MP Act 1952 (EPF, EPS, EDLI)' }, { id: 'ss2', name: 'ESI Act 1948 & Gratuity Act 1972' } ] }, { id: 'apfc_acc', title: 'General Accounting Principles', isCore: true, topics: [ { id: 'acc1', name: 'Double Entry System & Ledger' }, { id: 'acc2', name: 'Trial Balance & Depreciation' } ] } ], flashcards: [ { tag: 'Labour Law', title: 'The 4 New Labour Codes (2020)', items: ['Code on Wages 2019', 'Industrial Relations Code 2020', 'Code on Social Security 2020', 'OSHWC Code 2020'] } ] },
-      epfo2026: { id: 'epfo2026', title: 'UPSC EPFO Enforcement Officer / Accounts Officer (EO/AO) 2026', subtitle: 'EPFO Group B Officer', category: 'UPSC RECRUITMENT', formDate: '2026-08-22T00:00:00', examDate: '2026-12-19T09:30:00', defaultTargetHours: 8, syllabus: [ { id: 'eo_eng', title: 'General English', isCore: false, topics: [ { id: 'e1', name: 'Grammar & Vocabulary' } ] }, { id: 'eo_ir', title: 'Industrial Relations & Accounting', isCore: true, topics: [ { id: 'eo1', name: 'Labour Laws & Accounting Principles' } ] } ], flashcards: [] },
-      cse2027: { id: 'cse2027', title: 'UPSC Civil Services Examination (CSE / IAS) 2027', subtitle: 'IAS, IPS, IFS & Central Services', category: 'UPSC CIVIL SERVICES', formDate: '2027-02-10T00:00:00', examDate: '2027-05-23T09:30:00', defaultTargetHours: 10, syllabus: [ { id: 'cse_pol', title: 'Polity & Governance', isCore: true, topics: [ { id: 'pol1', name: 'Constitutional Rights & Articles' } ] }, { id: 'cse_hist', title: 'History & Art/Culture', isCore: true, topics: [ { id: 'h1', name: 'Modern Freedom Movement' } ] } ], flashcards: [] },
-      capf2027: { id: 'capf2027', title: 'UPSC CAPF Assistant Commandant (AC) 2027', subtitle: 'BSF, CRPF, CISF, ITBP', category: 'UPSC ARMED FORCES', formDate: '2027-04-21T00:00:00', examDate: '2027-08-01T10:00:00', defaultTargetHours: 8, syllabus: [ { id: 'c_p1', title: 'Paper 1: General Ability & Intelligence', isCore: true, topics: [ { id: 'cp1', name: 'Quant, Science & GK' } ] } ], flashcards: [] },
-      cds2027: { id: 'cds2027', title: 'UPSC Combined Defence Services (CDS) 2027', subtitle: 'IMA, INA, AFA & OTA Entry', category: 'UPSC DEFENCE', formDate: '2026-12-20T00:00:00', examDate: '2027-04-18T09:00:00', defaultTargetHours: 6, syllabus: [ { id: 'cds_eng', title: 'English & General Knowledge', isCore: true, topics: [ { id: 'cd1', name: 'Grammar, Science & Polity' } ] } ], flashcards: [] }
+      apfc_official: {
+        id: 'apfc_official', title: 'UPSC APFC / EPFO EO-AO Official 9-Section Exam 2026', subtitle: 'Strictly structured as per the 9 Official UPSC Advertisement Syllabus Sections', category: 'OFFICIAL ADVERTISEMENT SYLLABUS', formDate: '2026-08-22T00:00:00', examDate: '2026-12-20T09:30:00', defaultTargetHours: 8,
+        syllabus: [
+          { id: 'sec_1_eng', title: 'i. General English', isCore: false, topics: [ { id: 'eng_1', name: 'Workmanlike Use of Words & Vocabulary (Synonyms, Antonyms, One-word Substitution)' }, { id: 'eng_2', name: 'Grammar Rules, Error Spotting & Sentence Improvement' }, { id: 'eng_3', name: 'Idioms, Phrases, Ordering of Words & Cloze Composition' }, { id: 'eng_4', name: 'Reading Comprehension Passages & Contextual Workmanlike English' } ] },
+          { id: 'sec_2_hist_cult', title: 'ii. Indian Culture, Heritage and Freedom Movements', isCore: false, topics: [ { id: 'hist_1', name: 'Freedom Struggle: 1857 Revolt, Regional Rebellions & Freedom Chronology' }, { id: 'hist_2', name: 'INC Phases, Gandhian Era (1857-1947), INA & Prominent Freedom Leaders' }, { id: 'hist_3', name: 'Labour Movement & Press History (N M Lokhande, Deenbandhu, AITUC-INTUC Chronology)' }, { id: 'hist_4', name: 'Indian Culture & Heritage: Rock Art, Ajanta Jatakas, Black Pagoda & Temple Architecture' }, { id: 'hist_5', name: 'Performing Arts, Classical Dances, Natyashastra & Regional Tribal Festivals' }, { id: 'hist_6', name: 'Ancient & Medieval Dynasties (Vijayanagara, Palas, Chalukyas) & Post-Independence 1946 Assembly' } ] },
+          { id: 'sec_3_econ_dev', title: 'iii. Developmental Issues and Present Trends in Indian Economy', isCore: false, topics: [ { id: 'econ_1', name: 'Inflation Concepts (Headline vs Core Inflation, Social Cost, HDI Components)' }, { id: 'econ_2', name: 'Fiscal Policy, Taxation, Disinvestment vs PPP & Money Bill Provisions' }, { id: 'econ_3', name: 'Monetary Policy, Banking System, RTGS/NEFT & DFIs (IFCI/ICICI/IDBI vs NaBFID)' }, { id: 'econ_4', name: 'Micro-economics Theory (Monopolistic Competition vs Perfect Competition)' }, { id: 'econ_5', name: 'High-Priority Govt Welfare Schemes (MUDRA, POSHAN, NISHTHA, BioE3, StandUp India, SMILE)' }, { id: 'econ_6', name: 'Constitutional vs Non-Constitutional Bodies (Finance Commission, Election Commission, NCW, IMF Quota)' }, { id: 'econ_7', name: 'Colonial Economic History (Laissez-faire, Agency Houses, Plantation Ownership)' } ] },
+          { id: 'sec_4_polity_gov', title: 'iv. Governance and Constitution of India', isCore: false, topics: [ { id: 'pol_1', name: 'Fundamental Rights (Right to Privacy Art 21, Exploitation & Forced Labour Ban)' }, { id: 'pol_2', name: 'Labour-Linked DPSP Articles (Art 38, Art 39 Equal Pay, Art 41 Right to Work, Art 42 Maternity, Art 43 Living Wage, Art 43A)' }, { id: 'pol_3', name: 'Constitutional Amendments (61st Voting Age, 42nd DPSP Primacy, 73rd Panchayati Raj, 106th Women)' }, { id: 'pol_4', name: 'President/VP, Parliament (Art 107 Ordinary Bills, Art 312 All India Services) & Judiciary' }, { id: 'pol_5', name: 'Centre-State Relations (7th Schedule Lists, 4th Schedule Seat Allocation, River Disputes)' }, { id: 'pol_6', name: 'APFC Administrative & Quasi-Judicial Role (Section 7A Dues Inquiry & Civil Court Powers)' }, { id: 'pol_7', name: 'Local Self-Governance (Art 243ZD District Planning), RTI Act & NAM Principles' } ] },
+          { id: 'sec_5_sci_comp', title: 'v. General Science and Basic Knowledge of Computer Applications', isCore: false, topics: [ { id: 'sci_1', name: 'Physics: Optics & Lens Behaviour, Inelastic Collisions, AWACS & Microwave Jamming' }, { id: 'sci_2', name: 'Chemistry: Photochemical Smog, Fatty Acids/Phenol, Bleaching Powder & Soaps' }, { id: 'sci_3', name: 'Biology & Agriculture: Eyeball Layers, Prop Roots, Chikungunya Virus, Euglena & Grain Protection' }, { id: 'comp_1', name: 'Computer Hardware, Storage & Memory Registers (RAM, SSD vs HDD, MAR Register)' }, { id: 'comp_2', name: 'Programming Languages (FORTRAN/JAVA/Pascal vs C) & Real-Time Operating Systems' }, { id: 'comp_3', name: 'Networking (OSI Session Layer, IP Address 0-255, Mesh Formula n(n-1)/2) & HTML Comments/Mailto' }, { id: 'comp_4', name: 'File Formats (MIDI/WAV/MP3) & Modern AI (ChatGPT LLM, GPU Training, SSL Security)' } ] },
+          { id: 'sec_6_math_stat', title: 'vi. Elementary Mathematics, Statistics and General Mental Ability', isCore: false, topics: [ { id: 'math_1', name: 'Number System, Divisibility Rules, LCM/HCF & Logarithms' }, { id: 'math_2', name: 'Ratio-Proportion, Mixtures, Ages & Percentage Formulas' }, { id: 'math_3', name: 'Profit-Loss, Successive Discount, Time-Speed-Distance & Time-Work Proportional Scaling' }, { id: 'math_4', name: 'Algebra (Quadratic Roots, AP/GP Series) & Geometry/Mensuration Circle Theorems' }, { id: 'stat_1', name: 'Statistics: Central Tendency (Mean/Median/Mode) & Measures of Dispersion (Std Dev/Variance)' }, { id: 'stat_2', name: 'Probability (Dice-sum, Event probability with constraints) & Data Interpretation Tables' }, { id: 'reason_1', name: 'General Mental Ability: Coding-Decoding, Blood Relations, Seating Arrangement & Syllogism Venn Diagrams' } ] },
+          { id: 'sec_7_ir_ll_ss', title: 'vii. Industrial Relations, Labour Codes and Social Security in India', isCore: true, topics: [ { id: 'ir_1', name: 'Industrial Disputes Act 1947 & Sec 2(j)/11A (Strike Sec 2q, Lay-off 50%, Chapter VB 100+ threshold, Grievance Committee)' }, { id: 'ir_2', name: 'Trade Unions Act 1926 (Min 7 workers, 3-yr tenure, Federation Chronology: AITUC➔INTUC➔HMS➔BMS➔CITU)' }, { id: 'ir_3', name: 'Factories Act 1948 (Adolescent 14-18 yrs, Welfare Officer 500+ workers, Sec 7A Occupier, 3rd Schedule Diseases)' }, { id: 'ir_4', name: 'The 4 New Labour Codes 2020 (Wages 2019, IR Code 2020 300-worker threshold, Social Security 2020 Gig workers, OSHWC Code 2020)' }, { id: 'ss_1', name: 'EPF & MP Act 1952 (EPF 12%+12%, EPS Pension 8.33% max ₹1250 limit, EDLI Insurance)' }, { id: 'ss_2', name: 'Payment of Gratuity Act 1972 (15/26 x Wage x Years, 5 yrs service, ₹20 Lakh max cap)' }, { id: 'ss_3', name: 'ESI Act 1948 & Maternity Benefit Act 1961/2017 (ESI 0.75%/3.25%, Maternity 26 wks leave, nursing breaks)' }, { id: 'ss_4', name: 'Other Statutory Acts (Contract Labour 1970 50+ workers, Compensation Act 1923, Child Labour 1986, BOCW Act 1996, Unorganised Workers 2008)' }, { id: 'ir_theory', name: 'IR Theory & Concepts (Wild-Cat strike, Yellow Dog contract, Audi Alteram Partem, Sidney & Beatrice Webb, NM Lokhande)' } ] },
+          { id: 'sec_8_acc_audit_ins', title: 'viii. Principles of Accountancy, Auditing and Insurance', isCore: true, topics: [ { id: 'acc_1', name: 'Accounting Fundamentals & AS-1 (Going Concern, Consistency, Accrual, Money Measurement, Matching)' }, { id: 'acc_2', name: 'Journal Entry Recognition Trick (Outstanding=Liability/Credit, Prepaid=Asset/Debit, Accrued=Asset/Debit, Advance=Liability/Credit)' }, { id: 'acc_3', name: 'Inventory Valuation FIFO vs LIFO (First-In-First-Out vs Last-In-First-Out worked logic)' }, { id: 'acc_4', name: 'Account Classification & Golden Rules (Personal, Real, Nominal accounts)' }, { id: 'acc_5', name: 'Trial Balance & Error Rectification (Compensating, Principle, Omission, Suspense Account)' }, { id: 'acc_6', name: 'Depreciation Methods & Formula Bank (SLM vs WDV, Bad Debts formula, Gross Profit on Cost vs Sales, Operating Profit)' }, { id: 'acc_7', name: 'Financial Ratios & Management (Current Ratio, Quick Ratio, Debt-Equity, ROI, EOQ formula √(2DS/H), Break-Even Point)' }, { id: 'audit_1', name: 'Auditing Principles & Scope (Audit Strategy ➔ Audit Plan ➔ Audit Program, Vouching vs Verification, Audit File vs Documentation)' }, { id: 'ins_1', name: 'Insurance Principles & SEBI (Indemnity contract, Average Clause claim formula, SEBI subrogation principle)' }, { id: 'acc_spec', name: 'Specialized Accounting (Consignment abnormal loss, Joint Venture, Branch accounting Debtors system, Companies Act Schedule III)' } ] },
+          { id: 'sec_9_current_events', title: 'ix. Current Events of National and International Importance', isCore: false, topics: [ { id: 'curr_1', name: 'High-Priority Central Government Welfare Schemes (MUDRA, POSHAN, NISHTHA, StandUp India, SMILE, BioE3)' }, { id: 'curr_2', name: 'International Financial Bodies & Trade (IMF Quota %, World Bank, WTO, Balance of Payments)' }, { id: 'curr_3', name: 'Current Defence & Science Developments (AWACS, Drone Jamming, GPS Trilateration, AI & SSL updates)' }, { id: 'curr_4', name: 'Current Economic Trends, Union Budget 2026 & PIB Highlights' } ] }
+        ],
+        flashcards: [
+          { tag: 'Accounts PYQ', title: 'Accounts Journal & Inventory Tricks', items: ['Outstanding = Liability (Credit) | Prepaid = Asset (Debit)', 'Accrued = Asset (Debit) | Advance = Liability (Credit)', 'FIFO = Oldest lot first | LIFO = Newest lot first'] },
+          { tag: 'Labour Law PYQ', title: 'Labour Laws Key Provisions', items: ['ID Act 1947: Layoff 50% | Ch VB 100+ workers', 'Trade Unions 1926: Min 7 workers | Min age 15 yrs', 'Gratuity Act 1972: 15 days/yr | 5 yrs service | ₹20L max'] }
+        ]
+      },
+
+      cse2027: {
+        id: 'cse2027', title: 'UPSC CSE / IAS 2027 (Official Prelims & Mains Syllabus)', subtitle: 'Civil Services Examination - IAS, IPS, IFS', category: 'UPSC CIVIL SERVICES', formDate: '2027-02-10T00:00:00', examDate: '2027-05-23T09:30:00', defaultTargetHours: 10,
+        syllabus: [
+          { id: 'cse_pre_gs1', title: 'Prelims Paper 1: General Studies (GS 1)', isCore: true, topics: [
+            { id: 'cs_pre_1', name: 'Current Events of National & International Importance' },
+            { id: 'cs_pre_2', name: 'History of India & Indian National Movement (Ancient, Medieval, Modern 1857-1947)' },
+            { id: 'cs_pre_3', name: 'Indian & World Geography (Physical, Social, Economic Geography of India & the World)' },
+            { id: 'cs_pre_4', name: 'Indian Polity & Governance (Constitution, Political System, Panchayati Raj, Rights Issues)' },
+            { id: 'cs_pre_5', name: 'Economic & Social Development (Sustainable Dev, Poverty, Inclusion, Demographics)' },
+            { id: 'cs_pre_6', name: 'Environmental Ecology, Bio-diversity & Climate Change (General Issues)' },
+            { id: 'cs_pre_7', name: 'General Science (Physics, Chemistry, Life Sciences & Technology)' }
+          ] },
+          { id: 'cse_pre_csat', title: 'Prelims Paper 2: CSAT (Qualifying 33%)', isCore: false, topics: [
+            { id: 'cs_csat_1', name: 'Reading Comprehension & Interpersonal Communication Skills' },
+            { id: 'cs_csat_2', name: 'Logical Reasoning, Analytical Ability, Decision Making & Problem Solving' },
+            { id: 'cs_csat_3', name: 'General Mental Ability & Basic Numeracy (Numbers, Orders of Magnitude - Class X level)' },
+            { id: 'cs_csat_4', name: 'Data Interpretation (Charts, Graphs, Tables, Data Sufficiency - Class X level)' }
+          ] },
+          { id: 'cse_mains_gs1', title: 'Mains GS 1: Culture, History, Society & Geography', isCore: true, topics: [
+            { id: 'cs_m1_1', name: 'Indian Culture & Art Forms, Literature & Architecture (Ancient to Modern)' },
+            { id: 'cs_m1_2', name: 'Modern Indian History (Mid-18th Century to Present, Freedom Struggle & Stages)' },
+            { id: 'cs_m1_3', name: 'Post-Independence Consolidation & Reorganization within India' },
+            { id: 'cs_m1_4', name: 'World History (Industrial Revolution, World Wars, Colonization & Decolonization)' },
+            { id: 'cs_m1_5', name: 'Salient Features of Indian Society, Diversity, Role of Women & Social Empowerment' },
+            { id: 'cs_m1_6', name: 'Salient Features of World Physical Geography & Distribution of Key Natural Resources' }
+          ] },
+          { id: 'cse_mains_gs2', title: 'Mains GS 2: Governance, Constitution, Polity & IR', isCore: true, topics: [
+            { id: 'cs_m2_1', name: 'Indian Constitution (Historical Underpinnings, Evolution, Features, Amendments, Basic Structure)' },
+            { id: 'cs_m2_2', name: 'Functions & Responsibilities of Union & States, Federal Structure, Separation of Powers' },
+            { id: 'cs_m2_3', name: 'Parliament & State Legislatures, Structure & Functioning of Executive & Judiciary' },
+            { id: 'cs_m2_4', name: 'Governance, Statutory & Regulatory Bodies, E-Governance Applications' },
+            { id: 'cs_m2_5', name: 'India & International Relations, Bilateral, Regional & Global Groupings' }
+          ] },
+          { id: 'cse_mains_gs3', title: 'Mains GS 3: Economy, Agri, Sci-Tech, Environment & Security', isCore: true, topics: [
+            { id: 'cs_m3_1', name: 'Indian Economy (Planning, Mobilization of Resources, Growth, Development & Employment)' },
+            { id: 'cs_m3_2', name: 'Inclusive Growth, Budgeting, Major Crops & Cropping Patterns, Direct & Indirect Farm Subsidies' },
+            { id: 'cs_m3_3', name: 'Science & Technology (Developments, Applications, Indigenization, IT, Space, Biotech, IP Rights)' },
+            { id: 'cs_m3_4', name: 'Environment Conservation, Environmental Impact Assessment & Disaster Management' },
+            { id: 'cs_m3_5', name: 'Internal Security Challenges, Extremism, Cyber Security & Border Management' }
+          ] },
+          { id: 'cse_mains_gs4', title: 'Mains GS 4: Ethics, Integrity & Aptitude', isCore: true, topics: [
+            { id: 'cs_m4_1', name: 'Ethics & Human Interface (Essence, Determinants, Consequences, Moral Thinkers)' },
+            { id: 'cs_m4_2', name: 'Attitude (Content, Structure, Function, Moral & Political Attitudes, Persuasion)' },
+            { id: 'cs_m4_3', name: 'Emotional Intelligence Concepts & Application in Administrative Governance' },
+            { id: 'cs_m4_4', name: 'Probity in Governance, Public Service Values & Case Studies on Ethical Issues' }
+          ] }
+        ],
+        flashcards: [
+          { tag: 'CSE Strategy', title: 'UPSC CSE IAS Preparation Blueprint', items: ['Prelims Cut-off focus on GS 1 + 33% CSAT threshold', 'Answer Writing practice for Mains GS 1, 2, 3, 4', 'Daily Newspaper (The Hindu/IE) + PIB tracking'] }
+        ]
+      },
+
+      capf2027: {
+        id: 'capf2027', title: 'UPSC CAPF AC 2027 (Official Syllabus)', subtitle: 'BSF, CRPF, CISF, ITBP, SSB Assistant Commandant', category: 'UPSC ARMED FORCES', formDate: '2027-04-21T00:00:00', examDate: '2027-08-01T10:00:00', defaultTargetHours: 8,
+        syllabus: [
+          { id: 'capf_paper1', title: 'Paper 1: General Ability & Intelligence (250 Marks)', isCore: true, topics: [
+            { id: 'ca_p1_1', name: 'General Mental Ability (Quantitative Aptitude, Logical Reasoning & Data Interpretation)' },
+            { id: 'ca_p1_2', name: 'General Science (Everyday Science, IT, Biotechnology & Environmental Science)' },
+            { id: 'ca_p1_3', name: 'Current Events of National & International Importance (Governance, Sports, Awards, Security)' },
+            { id: 'ca_p1_4', name: 'Indian Polity & Economy (Constitution, Social System, Economic Development, Planning)' },
+            { id: 'ca_p1_5', name: 'History of India (Social, Economic & Political aspects, Freedom Movement)' },
+            { id: 'ca_p1_6', name: 'India & World Geography (Physical, Social & Economic Geography)' }
+          ] },
+          { id: 'capf_paper2', title: 'Paper 2: General Studies, Essay & Comprehension (200 Marks)', isCore: true, topics: [
+            { id: 'ca_p2_1', name: 'Essay Topics (Modern History, Freedom Struggle, Geography, Economy, Security - 80 Marks)' },
+            { id: 'ca_p2_2', name: 'Comprehension Passages & Precis Writing (24 Marks)' },
+            { id: 'ca_p2_3', name: 'Counter Argument Writing & Report Writing (40 Marks)' },
+            { id: 'ca_p2_4', name: 'Grammar, Vocabulary & Workmanlike English Skills (25 Marks)' }
+          ] }
+        ],
+        flashcards: []
+      },
+
+      cds2027: {
+        id: 'cds2027', title: 'UPSC CDS 2027 (Official Syllabus)', subtitle: 'IMA, INA, AFA & OTA Entry', category: 'UPSC DEFENCE', formDate: '2026-12-20T00:00:00', examDate: '2027-04-18T09:00:00', defaultTargetHours: 6,
+        syllabus: [
+          { id: 'cds_english', title: 'Paper 1: English Language (100 Marks)', isCore: true, topics: [
+            { id: 'cd_e1', name: 'Spotting Errors & Sentence Correction Rules' },
+            { id: 'cd_e2', name: 'Synonyms, Antonyms, Vocabulary & One-Word Substitution' },
+            { id: 'cd_e3', name: 'Ordering of Words & Ordering of Sentences' },
+            { id: 'cd_e4', name: 'Idioms, Phrases & Reading Comprehension Passages' }
+          ] },
+          { id: 'cds_gk', title: 'Paper 2: General Knowledge (100 Marks)', isCore: true, topics: [
+            { id: 'cd_g1', name: 'Everyday Physics, Chemistry & Life Sciences' },
+            { id: 'cd_g2', name: 'Indian History & Freedom Struggle (1857-1947)' },
+            { id: 'cd_g3', name: 'Indian Polity, Constitution & Governance' },
+            { id: 'cd_g4', name: 'Indian & World Physical Geography' },
+            { id: 'cd_g5', name: 'Current National/International Events & Defence Updates' }
+          ] },
+          { id: 'cds_math', title: 'Paper 3: Elementary Mathematics (100 Marks - IMA/INA/AFA)', isCore: true, topics: [
+            { id: 'cd_m1', name: 'Arithmetic (Number System, Divisibility, HCF/LCM, Logarithms, Percentages, Ratio, Profit & Loss)' },
+            { id: 'cd_m2', name: 'Algebra (Polynomials, Remainder Theorem, Quadratic Equations, AP/GP Series)' },
+            { id: 'cd_m3', name: 'Trigonometry (Sine, Cosine, Tangent, Heights and Distances)' },
+            { id: 'cd_m4', name: 'Geometry (Lines, Angles, Triangles Congruence/Similarity, Circle Theorems)' },
+            { id: 'cd_m5', name: 'Mensuration (Areas, Volumes of Spheres, Cylinders, Cones, Cubes)' },
+            { id: 'cd_m6', name: 'Statistics (Frequency tables, Bar charts, Histograms, Mean, Median, Mode)' }
+          ] }
+        ],
+        flashcards: []
+      }
     };
 
     class UniversalAppState {
       constructor() {
-        this.activeExamId = localStorage.getItem('upsc_universal_active_exam') || 'apfc2026';
+        this.activeExamId = localStorage.getItem('upsc_universal_active_exam') || 'apfc_official';
         this.customExams = JSON.parse(localStorage.getItem('upsc_universal_custom_exams') || '{}');
         this.studyLogs = JSON.parse(localStorage.getItem('upsc_universal_study_logs') || '[]');
-        this.pomoSessionsToday = parseInt(localStorage.getItem('upsc_universal_pomo_today') || '0', 10);
         this.initActiveExamData();
       }
-      getActivePack() { return EXAM_PACKS[this.activeExamId] || this.customExams[this.activeExamId] || EXAM_PACKS.apfc2026; }
+      getActivePack() { return EXAM_PACKS[this.activeExamId] || this.customExams[this.activeExamId] || EXAM_PACKS.apfc_official; }
       initActiveExamData() {
         const pack = this.getActivePack();
         this.formReleaseDate = new Date(pack.formDate);
         this.examDate = new Date(pack.examDate);
-        this.dailyTargetHours = pack.defaultTargetHours || 8;
+        const savedHours = localStorage.getItem(`upsc_target_hours_${this.activeExamId}`);
+        this.dailyTargetHours = savedHours ? parseInt(savedHours, 10) : (pack.defaultTargetHours || 8);
         this.syllabusData = JSON.parse(localStorage.getItem(`upsc_syllabus_${this.activeExamId}`) || '{}');
       }
       saveSyllabus() { localStorage.setItem(`upsc_syllabus_${this.activeExamId}`, JSON.stringify(this.syllabusData)); }
       saveLogs() { localStorage.setItem('upsc_universal_study_logs', JSON.stringify(this.studyLogs)); }
       saveCustomExams() { localStorage.setItem('upsc_universal_custom_exams', JSON.stringify(this.customExams)); }
+      saveSettings(h) {
+        this.dailyTargetHours = parseInt(h, 10);
+        localStorage.setItem(`upsc_target_hours_${this.activeExamId}`, this.dailyTargetHours);
+      }
       switchExam(id) { this.activeExamId = id; localStorage.setItem('upsc_universal_active_exam', id); this.initActiveExamData(); }
     }
 
     const appState = new UniversalAppState();
 
     document.addEventListener('DOMContentLoaded', () => {
-      initTabs(); initExamSelector(); initCountdowns(); renderActiveExamBanner(); renderSyllabus(); renderDashboardWidget(); renderStudyLogs(); renderFlashcards(); initPomodoro(); initSettingsModal(); initCustomExamModal(); initQuickLogForm(); initShareActions();
+      initTabs(); initExamSelector(); initCountdowns(); renderActiveExamBanner(); renderSyllabus(); renderDashboardWidget(); renderStudyLogs(); renderFlashcards(); initPomodoroEngine(); initSettingsModal(); initCustomExamModal(); initQuickLogForm(); initShareActions();
     });
 
     function initTabs() {
@@ -448,8 +505,7 @@
         tab.addEventListener('click', () => {
           document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
           document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-          tab.classList.add('active');
-          document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
+          tab.classList.add('active'); document.getElementById(tab.getAttribute('data-tab')).classList.add('active');
         });
       });
     }
@@ -498,6 +554,7 @@
         document.getElementById('examMinutes').textContent = String(Math.floor((examDiff / (1000 * 60)) % 60)).padStart(2, '0');
         document.getElementById('examSeconds').textContent = String(Math.floor((examDiff / 1000) % 60)).padStart(2, '0');
         document.getElementById('estStudyHoursLeft').textContent = Math.floor(eDays * appState.dailyTargetHours).toLocaleString();
+        document.getElementById('targetHoursRateDisplay').textContent = appState.dailyTargetHours;
         document.getElementById('currentDailyTargetDisplay').textContent = `${appState.dailyTargetHours} Hours/Day`;
       } else { document.getElementById('examCountdown').innerHTML = `<div style="font-weight:700; color:#ef4444;">EXAM DAY IS HERE!</div>`; }
     }
@@ -506,7 +563,7 @@
       const container = document.getElementById('syllabusContainer'); container.innerHTML = '';
       const pack = appState.getActivePack();
       let totalTopics = 0, completedTopics = 0, revisedTopicsCount = 0, coreCompleted = 0;
-      if (!pack.syllabus) return;
+      if (!pack.syllabus || pack.syllabus.length === 0) return;
 
       pack.syllabus.forEach(module => {
         const card = document.createElement('div'); card.className = 'module-card';
@@ -537,8 +594,7 @@
 
       container.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
         checkbox.addEventListener('change', (e) => {
-          const topicId = e.target.getAttribute('data-topic');
-          const stage = e.target.getAttribute('data-stage');
+          const topicId = e.target.getAttribute('data-topic'); const stage = e.target.getAttribute('data-stage');
           if (!appState.syllabusData[topicId]) appState.syllabusData[topicId] = { concept: false, rev1: false, rev2: false, pyq: false };
           appState.syllabusData[topicId][stage] = e.target.checked;
           appState.saveSyllabus(); renderSyllabus(); renderDashboardWidget();
@@ -599,38 +655,178 @@
       });
     }
 
-    let pomoTimerInterval = null, pomoSecondsLeft = 50 * 60, currentPomoMode = 'work';
-    function initPomodoro() {
+    /* ==========================================================================
+       HIGH-PRECISION BACKGROUND-PROOF POMODORO FOCUS TIMER ENGINE
+       ========================================================================== */
+    let pomoTargetDuration = 50 * 60 * 1000;
+    let pomoEndTime = null;
+    let pomoRemainingSeconds = 50 * 60;
+    let pomoIsRunning = false;
+    let pomoWorker = null;
+
+    function initPomodoroEngine() {
+      const workerBlob = new Blob([`
+        let timer = null;
+        self.onmessage = function(e) {
+          if (e.data === 'start') {
+            if (timer) clearInterval(timer);
+            timer = setInterval(function() { self.postMessage('tick'); }, 500);
+          } else if (e.data === 'stop') {
+            if (timer) clearInterval(timer);
+            timer = null;
+          }
+        };
+      `], { type: 'application/javascript' });
+      
+      try {
+        pomoWorker = new Worker(URL.createObjectURL(workerBlob));
+        pomoWorker.onmessage = function(e) {
+          if (e.data === 'tick' && pomoIsRunning) {
+            updatePomoClockFromTimestamp();
+          }
+        };
+      } catch (err) {}
+
       document.querySelectorAll('.pomo-mode-btn').forEach(btn => {
         btn.addEventListener('click', () => {
-          document.querySelectorAll('.pomo-mode-btn').forEach(b => b.classList.remove('active')); btn.classList.add('active');
-          currentPomoMode = btn.getAttribute('data-mode');
-          if (currentPomoMode === 'work') pomoSecondsLeft = 50 * 60; else if (currentPomoMode === 'shortBreak') pomoSecondsLeft = 10 * 60; else pomoSecondsLeft = 20 * 60;
-          pausePomoTimer(); updatePomoDisplay();
+          document.querySelectorAll('.pomo-mode-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          const mode = btn.getAttribute('data-mode');
+          if (mode === 'work') pomoTargetDuration = 50 * 60 * 1000;
+          else if (mode === 'shortBreak') pomoTargetDuration = 10 * 60 * 1000;
+          else pomoTargetDuration = 20 * 60 * 1000;
+          resetPomoTimer();
         });
       });
+
       document.getElementById('pomoStartBtn').addEventListener('click', startPomoTimer);
       document.getElementById('pomoPauseBtn').addEventListener('click', pausePomoTimer);
       document.getElementById('pomoResetBtn').addEventListener('click', resetPomoTimer);
+
+      document.addEventListener('visibilitychange', () => {
+        if (pomoIsRunning) updatePomoClockFromTimestamp();
+      });
+      window.addEventListener('focus', () => {
+        if (pomoIsRunning) updatePomoClockFromTimestamp();
+      });
     }
 
     function startPomoTimer() {
-      document.getElementById('pomoStartBtn').style.display = 'none'; document.getElementById('pomoPauseBtn').style.display = 'inline-flex';
-      if (pomoTimerInterval) clearInterval(pomoTimerInterval);
-      pomoTimerInterval = setInterval(() => {
-        pomoSecondsLeft--; updatePomoDisplay();
-        if (pomoSecondsLeft <= 0) { clearInterval(pomoTimerInterval); alert('Session complete!'); resetPomoTimer(); }
-      }, 1000);
+      if (Notification && Notification.permission !== 'granted') {
+        Notification.requestPermission();
+      }
+      pomoIsRunning = true;
+      pomoEndTime = Date.now() + (pomoRemainingSeconds * 1000);
+      
+      document.getElementById('pomoStartBtn').style.display = 'none';
+      document.getElementById('pomoPauseBtn').style.display = 'inline-flex';
+      document.getElementById('pomoStatusText').textContent = 'Focusing... (Running in Background)';
+      document.getElementById('timerRing').style.borderColor = 'var(--accent-success)';
+
+      if (pomoWorker) pomoWorker.postMessage('start');
     }
-    function pausePomoTimer() { clearInterval(pomoTimerInterval); document.getElementById('pomoStartBtn').style.display = 'inline-flex'; document.getElementById('pomoPauseBtn').style.display = 'none'; }
-    function resetPomoTimer() { pausePomoTimer(); pomoSecondsLeft = 50 * 60; updatePomoDisplay(); }
-    function updatePomoDisplay() { document.getElementById('pomoMinutes').textContent = String(Math.floor(pomoSecondsLeft / 60)).padStart(2, '0'); document.getElementById('pomoSeconds').textContent = String(pomoSecondsLeft % 60).padStart(2, '0'); }
+
+    function pausePomoTimer() {
+      pomoIsRunning = false;
+      document.getElementById('pomoStartBtn').style.display = 'inline-flex';
+      document.getElementById('pomoPauseBtn').style.display = 'none';
+      document.getElementById('pomoStatusText').textContent = 'Paused';
+      document.getElementById('timerRing').style.borderColor = 'var(--accent-warning)';
+
+      if (pomoWorker) pomoWorker.postMessage('stop');
+    }
+
+    function resetPomoTimer() {
+      pausePomoTimer();
+      pomoRemainingSeconds = Math.round(pomoTargetDuration / 1000);
+      pomoEndTime = null;
+      document.getElementById('pomoStatusText').textContent = 'Ready to Focus';
+      document.getElementById('timerRing').style.borderColor = 'var(--accent-primary)';
+      renderPomoTimeDisplay(pomoRemainingSeconds);
+    }
+
+    function updatePomoClockFromTimestamp() {
+      if (!pomoEndTime) return;
+      const now = Date.now();
+      const diffMs = pomoEndTime - now;
+      if (diffMs <= 0) {
+        pomoRemainingSeconds = 0;
+        renderPomoTimeDisplay(0);
+        triggerPomoCompletionAlert();
+      } else {
+        pomoRemainingSeconds = Math.ceil(diffMs / 1000);
+        renderPomoTimeDisplay(pomoRemainingSeconds);
+      }
+    }
+
+    function renderPomoTimeDisplay(sec) {
+      const mins = Math.floor(sec / 60);
+      const secs = sec % 60;
+      const formattedMins = String(mins).padStart(2, '0');
+      const formattedSecs = String(secs).padStart(2, '0');
+
+      document.getElementById('pomoMinutes').textContent = formattedMins;
+      document.getElementById('pomoSeconds').textContent = formattedSecs;
+
+      if (pomoIsRunning) {
+        document.title = `(${formattedMins}:${formattedSecs}) Universal Focus Timer`;
+      } else {
+        document.title = 'Universal UPSC Exam Preparation Command Center';
+      }
+    }
+
+    function triggerPomoCompletionAlert() {
+      pausePomoTimer();
+      document.getElementById('pomoStatusText').textContent = '🎉 Session Completed!';
+      document.getElementById('timerRing').style.borderColor = 'var(--accent-success)';
+      
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
+        osc.frequency.setValueAtTime(880, audioCtx.currentTime + 0.3);
+        gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 1.2);
+      } catch (err) {}
+
+      if (Notification && Notification.permission === 'granted') {
+        new Notification('🎯 Focus Session Completed!', {
+          body: 'Great job! Take a short break or log your completed study hours.',
+          icon: 'https://cdn-icons-png.flaticon.com/512/2991/2991106.png'
+        });
+      } else {
+        alert('🎉 Focus Session Completed! Great job!');
+      }
+    }
 
     function initSettingsModal() {
       const modal = document.getElementById('settingsModal');
+      const select = document.getElementById('targetHoursSelect');
+      select.value = String(appState.dailyTargetHours);
+
+      const badgeBtn = document.getElementById('dailyHoursBadgeBtn');
+      if (badgeBtn) badgeBtn.addEventListener('click', () => modal.classList.add('active'));
       document.getElementById('settingsBtn').addEventListener('click', () => modal.classList.add('active'));
       document.getElementById('closeSettingsBtn').addEventListener('click', () => modal.classList.remove('active'));
-      document.getElementById('saveSettingsBtn').addEventListener('click', () => { appState.dailyTargetHours = parseInt(document.getElementById('targetHoursSelect').value, 10); updateTimerDisplays(); modal.classList.remove('active'); });
+
+      document.querySelectorAll('.hour-pill').forEach(pill => {
+        pill.addEventListener('click', () => {
+          document.querySelectorAll('.hour-pill').forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+          select.value = pill.getAttribute('data-hrs');
+        });
+      });
+
+      document.getElementById('saveSettingsBtn').addEventListener('click', () => {
+        appState.saveSettings(select.value);
+        updateTimerDisplays();
+        modal.classList.remove('active');
+      });
     }
 
     function initCustomExamModal() {
@@ -670,7 +866,7 @@
             const imp = JSON.parse(evt.target.result);
             if (imp.customExams) appState.customExams = { ...appState.customExams, ...imp.customExams };
             if (imp.syllabusProgress) appState.syllabusData = { ...appState.syllabusData, ...imp.syllabusProgress };
-            appState.saveCustomExams(); appState.saveLogs(); renderSyllabus(); alert('Plan imported successfully!');
+            appState.saveCustomExams(); appState.saveLogs(); renderSyllabus(); alert('Plan imported!');
           } catch (err) { alert('Invalid backup file'); }
         }; reader.readAsText(file);
       });
